@@ -1,0 +1,93 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <!-- 菜单ImageView的样式 -->
+    <style name="MenuItemImageViewStyle">
+        <item name="android:layout_width">@dimen/space_24</item>
+        <item name="android:layout_height">@dimen/space_24</item>
+        <item name="android:layout_marginRight">@dimen/space_15</item>
+    </style>
+
+    <!-- 菜单TextView的样式 -->
+    <style name="MenuItemTextViewStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/drawer_menu_text</item>
+        <item name="android:drawablePadding">@dimen/space_10</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+    </style>
+
+
+    <style name="wrap_wrap">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="list_text_info" parent="@style/wrap_wrap">
+        <item name="android:textColor">@color/news_content</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="list_text_title" parent="@style/wrap_wrap">
+        <item name="android:textColor">@color/news_title</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+
+    <style name="uset_information_ll">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:background">@drawable/my_infomation_option_item_background</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">@dimen/space_4</item>
+    </style>
+
+    <style name="user_formation_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/space_2</item>
+        <item name="android:textColor">@color/text_white</item>
+        <item name="android:textSize">@dimen/text_size_11</item>
+    </style>
+
+    <style name="user_formation_info" parent="@style/user_formation_text">
+        <item name="android:textSize">@dimen/text_size_12</item>
+    </style>
+
+    <!--quick_popwindow 弹出隐藏动画 -->
+    <style name="quick_popwindow">
+        <item name="android:windowEnterAnimation">@anim/quick_popwindow_in</item>
+        <item name="android:windowExitAnimation">@anim/quick_popwindow_out</item>
+    </style>
+    <!--quick dialog 的样式-->
+    <style name="Theme.Light.Dialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:scrollHorizontally">true</item>
+    </style>
+
+
+    <!-- 横向线条 -->
+    <style name="h_line">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">1dip</item>
+        <item name="android:background">@color/tab_line_color</item>
+    </style>
+    <!-- 纵向线条 -->
+    <style name="v_line">
+        <item name="android:layout_width">1dip</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:background">@color/tab_line_color</item>
+    </style>
+</resources>

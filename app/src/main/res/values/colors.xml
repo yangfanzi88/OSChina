@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="drawer_menu_text">#ffffff</color>
+    <color name="news_content">#80000000</color>
+    <color name="news_title">#000</color>
+    <color name="tab_background">#199005</color>
+    <color name="tab_line_color">#519</color>
+    <color name="text_white">#fff</color>
+    <color name="white50">#80ffffff</color>
+    <color name="black00">#00000000</color>
+    <color name="text_gray">#666</color>
+    <color name="light_gray">#1a000000</color>
+    <color name="my_information_option_pressed">#18be40</color>
+</resources>
