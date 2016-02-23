@@ -3,20 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.fanyangsz.oschina.view.NewsView.NewsDetialsActivity">
     <!--<item-->
-        <!--android:id="@+id/action_settings"-->
-        <!--android:orderInCategory="100"-->
-        <!--android:title="@string/action_settings"-->
-        <!--app:showAsAction="withText" >-->
-        <!--<menu>-->
-            <item
-                android:id="@+id/action_refresh"
-                android:title="刷新"
-                app:showAsAction="never"/>
-            <item
-                android:id="@+id/action_textSize"
-                android:title="正文字体"
-                app:showAsAction="never"/>
+    <!--android:id="@+id/action_settings"-->
+    <!--android:orderInCategory="100"-->
+    <!--android:title="@string/action_settings"-->
+    <!--app:showAsAction="withText" >-->
+    <!--<menu>-->
+    <item
+        android:id="@+id/action_refresh"
+        android:title="刷新"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_textSize"
+        android:title="正文字体"
+        app:showAsAction="never" />
 
-        <!--</menu>-->
+    <!--</menu>-->
     <!--</item>-->
 </menu>

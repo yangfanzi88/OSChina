@@ -1,10 +1,9 @@
 package com.example.fanyangsz.oschina.view.LoginView;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,17 +17,17 @@ import com.example.fanyangsz.oschina.Beans.LoginUserBean;
 import com.example.fanyangsz.oschina.Beans.Result;
 import com.example.fanyangsz.oschina.R;
 
-public class LoginActivity extends Activity implements HttpSDK.onLoginCallBack {
+public class LoginActivity extends ActionBarActivity implements HttpSDK.onLoginCallBack {
 
     EditText editAccount;
     EditText editPassWord;
     Button btnLogin;
-    Context context;
     ProgressDialog myDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_login);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         editAccount = (EditText)findViewById(R.id.et_username);
         editPassWord = (EditText)findViewById(R.id.et_password);
         btnLogin = (Button)findViewById(R.id.btn_login);
@@ -80,7 +79,7 @@ public class LoginActivity extends Activity implements HttpSDK.onLoginCallBack {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
+//        getMenuInflater().inflate(R.menu.menu_login, menu);
         return true;
     }
 
@@ -92,8 +91,13 @@ public class LoginActivity extends Activity implements HttpSDK.onLoginCallBack {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             return true;
+        }*/
+
+        switch (id){
+            case android.R.id.home:
+                finish();
         }
 
         return super.onOptionsItemSelected(item);

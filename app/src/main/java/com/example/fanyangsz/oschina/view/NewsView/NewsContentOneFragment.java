@@ -69,11 +69,13 @@ public class NewsContentOneFragment extends Fragment implements HttpSDK.OnNewsCa
                 if (position < listView.getAdapter().getCount()) {
                     NewsBean bean = myAdapter.getDatas().getNews().get(position-1);
                     String url = bean.getUrl();
+                    String title = bean.getTitle();
                     if (TextUtils.isEmpty(url)) {
                         return;
                     }
                     Intent intent = new Intent(getActivity(), NewsDetialsActivity.class);
                     intent.putExtra("urlWebView", url);
+                    intent.putExtra("newsTitle",title);
                     Log.e("webview",url);
                     getActivity().startActivity(intent);
                 }

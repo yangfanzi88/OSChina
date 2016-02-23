@@ -36,6 +36,7 @@
 
         <activity
             android:name=".view.LoginView.LoginActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             android:label="@string/title_activity_login" >
         </activity>
         <activity

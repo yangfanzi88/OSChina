@@ -61,7 +61,7 @@ public class MainActivity extends Activity
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
-
+        mTitle = getString(R.string.app_name);
         //底部功能栏
         mBottomBarFragment = new BottomBarFragment();
         mBottomBarFragment.setCallback(this);
@@ -186,7 +186,7 @@ public class MainActivity extends Activity
     }
 
     public void onSectionAttached(int number) {
-        switch (number) {
+        /*switch (number) {
             case 1:
                 mTitle = getString(R.string.title_section1);
                 break;
@@ -199,7 +199,7 @@ public class MainActivity extends Activity
             case 4:
                 mTitle = getString(R.string.title_section4);
                 break;
-        }
+        }*/
     }
 
     public void restoreActionBar() {

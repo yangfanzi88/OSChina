@@ -31,10 +31,13 @@ public class NewsDetialsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         Log.e("品牌！！！！", android.os.Build.BOARD);
 
+        intent = getIntent();
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true有小箭头，并且图标可以点击
         actionBar.setDisplayShowHomeEnabled(true);// 使左上角图标是否显示，如果设成false，则没有程序图标，仅仅就个标题，否则，显示应用程序图标，对应id为android.R.id.home，对应ActionBar.DISPLAY_SHOW_HOME
+        actionBar.setTitle(intent.getStringExtra("newsTitle"));
 
         setContentView(R.layout.layout_news_detials);
         mWebView = (WebView)findViewById(R.id.webview);
@@ -50,7 +53,7 @@ public class NewsDetialsActivity extends ActionBarActivity {
     private void initWebView(){
 
 
-        intent = getIntent();
+
         mWebView.loadUrl(intent.getStringExtra("urlWebView"));
 
         mWebViewClient = new WebViewClient(){
@@ -90,6 +93,7 @@ public class NewsDetialsActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_news_detials, menu);
+
         return true;
     }
 

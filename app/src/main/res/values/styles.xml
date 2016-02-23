@@ -78,6 +78,7 @@
     </style>
 
 
+
     <!-- 横向线条 -->
     <style name="h_line">
         <item name="android:layout_width">fill_parent</item>
