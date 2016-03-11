@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.example.fanyangsz.oschina.R;
 import com.example.fanyangsz.oschina.adapter.myFragmentPageradapter;
 import com.example.fanyangsz.oschina.view.NewsView.NewsContentFourFragment;
-import com.example.fanyangsz.oschina.view.NewsView.NewsContentOneFragment;
 import com.example.fanyangsz.oschina.view.NewsView.NewsContentThreeFragment;
 import com.example.fanyangsz.oschina.view.NewsView.NewsContentTwoFragment;
 
@@ -38,7 +37,7 @@ public class CircleViewpagerFragment extends Fragment  {
     TextView title3;
     ImageView imageView;
 
-    NewsContentOneFragment mNewsContentOneFragment = new NewsContentOneFragment();
+    CircleContentOneFragment mCircleContentOneFragment = new CircleContentOneFragment();
     NewsContentTwoFragment mNewsContentTwoFragment = new NewsContentTwoFragment();
     NewsContentThreeFragment mNewsContentThreeFragment = new NewsContentThreeFragment();
     NewsContentFourFragment mNewsContentFourFragment = new NewsContentFourFragment();
@@ -60,7 +59,7 @@ public class CircleViewpagerFragment extends Fragment  {
     private void InitViewPager() {
         viewPager = (ViewPager) view.findViewById(R.id.circle_viewpager);
         mFragment = new ArrayList<Fragment>();
-        mFragment.add(mNewsContentOneFragment);
+        mFragment.add(mCircleContentOneFragment);
         mFragment.add(mNewsContentTwoFragment);
         mFragment.add(mNewsContentThreeFragment);
         viewPager.setAdapter(new myFragmentPageradapter(getFragmentManager(),mFragment));
@@ -104,12 +103,15 @@ public class CircleViewpagerFragment extends Fragment  {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.remove(mNewsContentOneFragment);
-        transaction.remove(mNewsContentTwoFragment);
-        transaction.remove(mNewsContentThreeFragment);
-        transaction.commit();
+        if(!getActivity().isDestroyed()) {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.remove(mCircleContentOneFragment);
+            transaction.remove(mNewsContentTwoFragment);
+            transaction.remove(mNewsContentThreeFragment);
+            transaction.commit();
+        }
     }
+
 
     public class MyOnClickListener implements View.OnClickListener {
         private int index = 0;

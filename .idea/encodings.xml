@@ -13,6 +13,7 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/example/fanyangsz/oschina/view/MainActivity/MainActivity.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/example/fanyangsz/oschina/view/NewsView/NewsContentOneFragment.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/example/fanyangsz/oschina/view/NewsView/NewsViewpagerFragment.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/click_like.png" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/compose_clearbutton_background.9.png" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/compose_clearbutton_background_press.9.png" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/compose_toolbar_emoji_normal.png" charset="GBK" />
@@ -55,6 +56,8 @@
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/compose_toolbar_trend_selector.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/ib_clear_image_selector.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/my_infomation_option_item_background.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/pic_bg.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/values/font_awsome_string.xml" charset="GBK" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

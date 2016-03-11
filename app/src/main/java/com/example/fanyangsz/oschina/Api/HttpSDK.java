@@ -12,6 +12,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.fanyangsz.oschina.Beans.LoginUserBean;
 import com.example.fanyangsz.oschina.Beans.NewsBeans;
+import com.example.fanyangsz.oschina.Beans.TweetBeans;
 import com.example.fanyangsz.oschina.Support.util.XmlUtils;
 
 import java.io.ByteArrayInputStream;
@@ -98,6 +99,35 @@ public class HttpSDK {
                 return params;
             }
         };
+        mQueue.add(stringRequest);
+        mQueue.start();
+    }
+
+    public interface OnTweetCallBack{
+        void onError();
+
+        void onSuccess(TweetBeans.TweetList datas);
+    }
+
+    public void getTweet(Context context,final OnTweetCallBack callBack,int page){
+        Log.e("123", SDK_BASE_URL + "action/api/tweet_list" + "?pageIndex="+ page );
+        String url = SDK_BASE_URL + "action/api/tweet_list" + "?pageIndex="+ page;
+        mQueue = Volley.newRequestQueue(context);
+        StringRequest stringRequest = new StringRequest(url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        InputStream is = new ByteArrayInputStream(s.getBytes());
+                        TweetBeans.TweetList Tweets = XmlUtils.toBean(TweetBeans.TweetList.class, is);
+                        callBack.onSuccess(Tweets);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        callBack.onError();
+                    }
+                });
         mQueue.add(stringRequest);
         mQueue.start();
     }

@@ -64,12 +64,14 @@ public class NewsViewpagerFragment extends Fragment{
     public void onDestroyView() {
         super.onDestroyView();
 //        viewPager.removeAllViews();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.remove(mNewsContentOneFragment);
-        transaction.remove(mNewsContentTwoFragment);
-        transaction.remove(mNewsContentThreeFragment);
-        transaction.remove(mNewsContentFourFragment);
-        transaction.commit();
+        if(!getActivity().isDestroyed()){
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.remove(mNewsContentOneFragment);
+            transaction.remove(mNewsContentTwoFragment);
+            transaction.remove(mNewsContentThreeFragment);
+            transaction.remove(mNewsContentFourFragment);
+            transaction.commit();
+        }
     }
 
     private void InitViewPager(){

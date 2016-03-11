@@ -36,6 +36,7 @@
         android:layout_marginBottom="5dp"
         android:ellipsize="end"
         android:maxLines="2"
+        android:autoLink="all"
         android:textColor="@color/news_content" />
 
 

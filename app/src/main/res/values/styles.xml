@@ -63,6 +63,14 @@
         <item name="android:textSize">@dimen/text_size_12</item>
     </style>
 
+    <style name="user_face_image">
+        <item name="android:layout_width">40.0dip</item>
+        <item name="android:layout_height">40.0dip</item>
+        <item name="android:padding">1.0dip</item>
+        <item name="android:clickable">true</item>
+        <item name="android:src">@drawable/widget_dface</item>
+    </style>
+
     <!--quick_popwindow 弹出隐藏动画 -->
     <style name="quick_popwindow">
         <item name="android:windowEnterAnimation">@anim/quick_popwindow_in</item>

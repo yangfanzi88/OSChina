@@ -8,6 +8,7 @@
     <dimen name="navigation_drawer_width">240dp</dimen>
     <!--距离-->
     <dimen name="space_2">2dp</dimen>
+    <dimen name="space_3">3dp</dimen>
     <dimen name="space_4">4dp</dimen>
     <dimen name="space_5">5dp</dimen>
     <dimen name="space_8">8dp</dimen>
