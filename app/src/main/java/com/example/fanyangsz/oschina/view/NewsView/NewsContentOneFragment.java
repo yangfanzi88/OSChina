@@ -60,7 +60,7 @@ public class NewsContentOneFragment extends Fragment implements HttpSDK.OnNewsCa
         listView.setVisibility(View.GONE);
         loadingView.setVisibility(View.VISIBLE);
 
-        new HttpSDK().getNews(getActivity(), this, currentPage);
+        requestNews(currentPage);
 
         listView.setOnRefreshListener(this);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -70,14 +70,21 @@ public class NewsContentOneFragment extends Fragment implements HttpSDK.OnNewsCa
                     NewsBean bean = myAdapter.getDatas().getNews().get(position-1);
                     String url = bean.getUrl();
                     String title = bean.getTitle();
-                    if (TextUtils.isEmpty(url)) {
-                        return;
-                    }
+
                     Intent intent = new Intent(getActivity(), NewsDetialsActivity.class);
+                    if (TextUtils.isEmpty(url)) {
+                        url = HttpSDK.NEWS_URL + bean.getId();
+                        intent.putExtra("hideHead",true);
+                    }else {
+                        intent.putExtra("hideHead",false);
+                    }
                     intent.putExtra("urlWebView", url);
                     intent.putExtra("newsTitle",title);
                     Log.e("webview",url);
                     getActivity().startActivity(intent);
+
+                    bean.setHaveRead(true);
+                    myAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -132,30 +139,22 @@ public class NewsContentOneFragment extends Fragment implements HttpSDK.OnNewsCa
         Log.e("yfyf", "onDetach");
     }
 
-    /*@Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        try{
-            if(position < listView.getAdapter().getCount()){
-                NewsBean bean = myAdapter.getDatas().getNews().get(position);
-                String url = bean.getUrl();
-                if(TextUtils.isEmpty(url)){
-                    return;
-                }
-                Intent intent = new Intent(getActivity(),NewsDetialsActivity.class);
-                intent.putExtra("urlWebView",url);
-                getActivity().startActivity(intent);
-            }
-        }catch (Exception e){
-
-        }
-    }*/
+    private void requestNews(int currentPage){
+        new HttpSDK().getInfoNews(getActivity(), this, currentPage);
+    }
 
     @Override
     public void onError() {
-        listView = null;
+//        listView = null;
         Log.e("NewsBeans", "ERROR");
         loadingView.setVisibility(View.GONE);
         failView.setVisibility(View.VISIBLE);
+        view.findViewById(R.id.error_refresh).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestNews(currentPage);
+            }
+        });
     }
 
     @Override
@@ -175,8 +174,6 @@ public class NewsContentOneFragment extends Fragment implements HttpSDK.OnNewsCa
 
             loadingView.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
-
-
         }
 
     }
@@ -184,14 +181,15 @@ public class NewsContentOneFragment extends Fragment implements HttpSDK.OnNewsCa
     @Override
     public void onDownPullRefresh() {
         currentPage = 0;
-        new HttpSDK().getNews(getActivity(), this, currentPage);
-
+//        new HttpSDK().getInfoNews(getActivity(), this, currentPage);
+        requestNews(currentPage);
     }
 
     @Override
     public void onLoadingMore() {
         currentPage ++;
-        new HttpSDK().getNews(getActivity(), this, currentPage);
+        requestNews(currentPage);
+//        new HttpSDK().getInfoNews(getActivity(), this, currentPage);
 //        listView.hideFooterView();
     }
 

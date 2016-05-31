@@ -24,6 +24,7 @@ import java.util.Map;
  * Created by fanyang.sz on 2016/1/4.
  */
 public class HttpSDK {
+    public static String NEWS_URL = "http://m.oschina.net/news/";
     private final String SDK_BASE_URL = "http://www.oschina.net/";
     RequestQueue mQueue;
 
@@ -34,13 +35,16 @@ public class HttpSDK {
         void onSuccess(NewsBeans.NewsList news);
 
     }
-    public void getNews(Context context, final OnNewsCallback callback,int page){
-        getNews(context,callback,page,0);
+    public void getInfoNews(Context context, final OnNewsCallback callback,int page){
+        getNews(context,callback,page,0,null);
     }
-    public void getNews(Context context, final OnNewsCallback callback,int page ,int catalog){
-        Log.e("123", SDK_BASE_URL + "action/api/news_list" + "?catalog=" + catalog +"&pageIndex="+ page );
+    public void getHotNews(Context context, final OnNewsCallback callback,int page){
+        getNews(context,callback,page,0,"week");
+    }
+    public void getNews(Context context, final OnNewsCallback callback,int page ,int catalog, String show){
+        Log.e("123", SDK_BASE_URL + "action/api/news_list" + "?catalog=" + catalog +"&pageIndex="+ page + "&show=" +show );
         mQueue = Volley.newRequestQueue(context);
-        String url = SDK_BASE_URL + "action/api/news_list" + "?catalog=" + catalog +"&pageIndex="+ page;
+        String url = SDK_BASE_URL + "action/api/news_list" + "?catalog=" + catalog +"&pageIndex="+ page + "&show=" +show ;
         StringRequest stringRequest = new StringRequest(url,
                 new Response.Listener<String>() {
                     @Override

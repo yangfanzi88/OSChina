@@ -19,6 +19,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.example.fanyangsz.oschina.R;
+import com.example.fanyangsz.oschina.Support.util.Utils;
 
 public class NewsDetialsActivity extends ActionBarActivity {
 
@@ -43,9 +44,13 @@ public class NewsDetialsActivity extends ActionBarActivity {
         mWebView = (WebView)findViewById(R.id.webview);
         loading = findViewById(R.id.loading);
         fail = findViewById(R.id.fail);
+
+
         WebSettings settings = mWebView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setBlockNetworkImage(true);
+        settings.setUseWideViewPort(true);//设置此属性，可任意比例缩放
+        settings.setLoadWithOverviewMode(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         initWebView();
     }
@@ -68,10 +73,16 @@ public class NewsDetialsActivity extends ActionBarActivity {
 
             @Override
             public void onPageFinished(WebView view, String url) {
+
                 super.onPageFinished(view, url);
+                if(Boolean.parseBoolean(intent.getStringExtra("hideHead"))){
+                    mWebView.setPaddingRelative(mWebView.getPaddingStart(), Utils.dip2px(getBaseContext(), -20),
+                            mWebView.getPaddingEnd(), mWebView.getPaddingBottom());
+                }
                 loading.setVisibility(View.GONE);
                 mWebView.setVisibility(View.VISIBLE);
                 fail.setVisibility(View.GONE);
+
             }
 
 

@@ -47,6 +47,7 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
     private int footerViewHeight;          // 脚布局的高度
     private boolean isLoadingMore = false;// 是否正在加载更多中
 
+
     public RefreshListView(Context context, AttributeSet attrs){
         super(context, attrs);
         initHeaderView();
@@ -59,11 +60,14 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
     */
     private void initFooterView(){
         footerView = View.inflate(getContext(), R.layout.listview_footer, null);
+        footerView.findViewById(R.id.normal_load_more).setVisibility(VISIBLE);
+        footerView.findViewById(R.id.not_have_more).setVisibility(GONE);
         footerView.measure(0, 0);
         footerViewHeight = footerView.getMeasuredHeight();
         footerView.setPadding(0, -footerViewHeight, 0, 0);
         this.addFooterView(footerView);
     }
+
     /**
     * 初始化头布局
     */
@@ -238,12 +242,14 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
      * 隐藏头布局
      */
     public void hideHeaderView() {
-        headerView.setPadding(0, -headerViewHeight, 0, 0);
-        ivArrow.setVisibility(View.VISIBLE);
-        mProgressBar.setVisibility(View.GONE);
-        tvState.setText("下拉刷新");
-        tvLastUpdateTime.setText("最后刷新时间: " + getLastUpdateTime());
-        currentState = DOWN_PULL_REFRESH;
+        if(currentState != DOWN_PULL_REFRESH){
+            headerView.setPadding(0, -headerViewHeight, 0, 0);
+            ivArrow.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.GONE);
+            tvState.setText("下拉刷新");
+            tvLastUpdateTime.setText("最后刷新时间: " + getLastUpdateTime());
+            currentState = DOWN_PULL_REFRESH;
+        }
     }
 
     /**

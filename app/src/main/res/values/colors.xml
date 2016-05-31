@@ -11,4 +11,5 @@
     <color name="text_gray">#666</color>
     <color name="light_gray">#1a000000</color>
     <color name="my_information_option_pressed">#18be40</color>
+    <color name="error_tips">#900519</color>
 </resources>

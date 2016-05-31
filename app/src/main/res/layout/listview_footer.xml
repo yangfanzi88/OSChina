@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
     <LinearLayout
+        android:id="@+id/normal_load_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -25,5 +26,15 @@
             android:textColor="#FF0000"
             android:textSize="18sp" />
     </LinearLayout>
+    <TextView
+        android:id="@+id/not_have_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="已加载全部"
+        android:textColor="#FF0000"
+        android:textSize="18sp"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"/>
 
 </LinearLayout>

@@ -53,6 +53,8 @@ public class NewsBean extends BaseBean implements Serializable {
     @XStreamAlias("relativies")
     private List<Relative> relatives = new ArrayList<Relative>();
 
+    private boolean isHaveRead;
+
 
     public int getId() {
         return id;
@@ -156,6 +158,14 @@ public class NewsBean extends BaseBean implements Serializable {
 
     public void setRelatives(List<Relative> relatives) {
         this.relatives = relatives;
+    }
+
+    public boolean isHaveRead() {
+        return isHaveRead;
+    }
+
+    public void setHaveRead(boolean haveRead) {
+        isHaveRead = haveRead;
     }
 
     @XStreamAlias("newstype")

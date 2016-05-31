@@ -66,7 +66,9 @@ public class NewsAdapter extends BaseAdapter{
 //        }catch (Exception e){
 //        }
 
-
+        if(datas.getNews().get(position).isHaveRead()){
+            holder.newsTitle.setTextColor(context.getResources().getColor(R.color.news_content));
+        }
         holder.newsTitle.setText(datas.getNews().get(position).getTitle());
         holder.content.setText(datas.getNews().get(position).getBody());
         holder.source.setText(datas.getNews().get(position).getAuthor());
@@ -83,17 +85,10 @@ public class NewsAdapter extends BaseAdapter{
         TextView comment;
     }
 
-    /*@Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        NewsBean bean = datas.getNews().get(position);
-        String url = bean.getUrl();
-        if(TextUtils.isEmpty(url)){
-            return;
-        }
-        Intent intent = new Intent(context,NewsDetialsActivity.class);
-        intent.putExtra("urlWebView",url);
-        context.startActivity(intent);
-    }*/
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+    }
 
     public NewsBeans.NewsList getDatas() {
         return datas;
