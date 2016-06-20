@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:orientation="vertical"
-    android:background="@color/text_white">
+    android:background="@color/white">
 
     <!--<View
         android:id="@+id/quick_option_null_view"

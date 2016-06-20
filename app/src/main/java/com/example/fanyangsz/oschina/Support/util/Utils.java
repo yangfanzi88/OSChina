@@ -1,6 +1,7 @@
 package com.example.fanyangsz.oschina.Support.util;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.WindowManager;
@@ -9,6 +10,7 @@ import android.view.WindowManager;
  * Created by wangdan on 15-3-26.
  */
 public class Utils {
+    public static Bitmap.Config displayBitmapConfig = Bitmap.Config.ARGB_8888;
     private static String ua;
     public static int dip2px(Context context, int dipValue) {
         float reSize = context.getResources().getDisplayMetrics().density;

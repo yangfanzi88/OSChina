@@ -10,7 +10,7 @@
     <string name="bottom_bar_2">动弹</string>
     <string name="bottom_bar_3">发现</string>
     <string name="bottom_bar_4">我</string>
-    
+
     <string name="bottom_bar_1_title_1">资讯</string>
     <string name="bottom_bar_1_title_2">热点</string>
     <string name="bottom_bar_1_title_3">博客</string>
@@ -51,4 +51,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_news_detials">NewsDetialsActivity</string>
     <string name="title_activity_activity_tweet">activity_tweet</string>
+
+    <string name="tweet_details">动弹详情</string>
 </resources>

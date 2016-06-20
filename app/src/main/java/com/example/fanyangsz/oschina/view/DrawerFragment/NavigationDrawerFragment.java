@@ -98,7 +98,7 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-        mDrawerListView.setDivider(getResources().getDrawable(R.color.text_white));
+        mDrawerListView.setDivider(getResources().getDrawable(R.color.white));
         mDrawerListView.setDividerHeight(1);
         /*mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),

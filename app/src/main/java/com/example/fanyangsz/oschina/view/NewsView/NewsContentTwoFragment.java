@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.example.fanyangsz.oschina.Api.HttpSDK;
 import com.example.fanyangsz.oschina.Beans.NewsBean;
 import com.example.fanyangsz.oschina.Beans.NewsBeans;
@@ -27,7 +25,7 @@ public class NewsContentTwoFragment extends Fragment implements HttpSDK.OnNewsCa
         RefreshListView.OnRefreshListener {
 
     private RefreshListView listView;
-    RequestQueue mQueue;
+
     NewsAdapter myAdapter;
     NewsBeans.NewsList currentNews;
     private int currentPage = 0;
@@ -37,7 +35,6 @@ public class NewsContentTwoFragment extends Fragment implements HttpSDK.OnNewsCa
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mQueue = Volley.newRequestQueue(getActivity());
         view = inflater.inflate(R.layout.layout_content,container,false);
         listView = (RefreshListView)view.findViewById(R.id.listView_one);
         loadingView = view.findViewById(R.id.loading);
@@ -52,14 +49,14 @@ public class NewsContentTwoFragment extends Fragment implements HttpSDK.OnNewsCa
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position < listView.getAdapter().getCount()) {
+                if (position>0 && position < listView.getAdapter().getCount()-1) {
                     NewsBean bean = myAdapter.getDatas().getNews().get(position-1);
                     String url = bean.getUrl();
                     String title = bean.getTitle();
                     if (TextUtils.isEmpty(url)) {
                         url = HttpSDK.NEWS_URL + bean.getId();
                     }
-                    Intent intent = new Intent(getActivity(), NewsDetialsActivity.class);
+                    Intent intent = new Intent(getActivity(), NewsDetailsActivity.class);
                     intent.putExtra("urlWebView", url);
                     intent.putExtra("newsTitle",title);
                     Log.e("webview",url);
@@ -76,7 +73,7 @@ public class NewsContentTwoFragment extends Fragment implements HttpSDK.OnNewsCa
     }
 
     private void requestNews(int currentPage){
-        new HttpSDK().getHotNews(getActivity(), this, currentPage );
+        new HttpSDK().getHotNews(getActivity().getApplicationContext(), this, currentPage );
     }
 
     @Override

@@ -66,12 +66,12 @@ public class NewsContentOneFragment extends Fragment implements HttpSDK.OnNewsCa
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position < listView.getAdapter().getCount()) {
+                if (position>0 && position < listView.getAdapter().getCount()-1) {
                     NewsBean bean = myAdapter.getDatas().getNews().get(position-1);
                     String url = bean.getUrl();
                     String title = bean.getTitle();
 
-                    Intent intent = new Intent(getActivity(), NewsDetialsActivity.class);
+                    Intent intent = new Intent(getActivity(), NewsDetailsActivity.class);
                     if (TextUtils.isEmpty(url)) {
                         url = HttpSDK.NEWS_URL + bean.getId();
                         intent.putExtra("hideHead",true);
@@ -140,7 +140,7 @@ public class NewsContentOneFragment extends Fragment implements HttpSDK.OnNewsCa
     }
 
     private void requestNews(int currentPage){
-        new HttpSDK().getInfoNews(getActivity(), this, currentPage);
+        new HttpSDK().getInfoNews(getActivity().getApplicationContext(), this, currentPage);
     }
 
     @Override

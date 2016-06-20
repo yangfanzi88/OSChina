@@ -11,22 +11,25 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.fanyangsz.oschina.R;
-import com.example.fanyangsz.oschina.Support.util.Utils;
 
-public class NewsDetialsActivity extends ActionBarActivity {
+public class NewsDetailsActivity extends ActionBarActivity {
 
     WebView mWebView;
     WebViewClient mWebViewClient;
     Intent intent;
     View loading,fail;
+    FrameLayout frameLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,17 +44,23 @@ public class NewsDetialsActivity extends ActionBarActivity {
         actionBar.setTitle(intent.getStringExtra("newsTitle"));
 
         setContentView(R.layout.layout_news_detials);
-        mWebView = (WebView)findViewById(R.id.webview);
+        frameLayout = (FrameLayout)findViewById(R.id.framelayout);
+//        mWebView = (WebView)findViewById(R.id.webview);
         loading = findViewById(R.id.loading);
         fail = findViewById(R.id.fail);
 
-
+        mWebView = new WebView(getBaseContext());
+        frameLayout.addView(mWebView, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         WebSettings settings = mWebView.getSettings();
+        mWebView.setFocusableInTouchMode(true);
         settings.setJavaScriptEnabled(true);
-        settings.setBlockNetworkImage(true);
+        settings.setBlockNetworkImage(false);//解除阻止加载网络图片
         settings.setUseWideViewPort(true);//设置此属性，可任意比例缩放
         settings.setLoadWithOverviewMode(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        settings.setSupportZoom(true);//支持缩放
+        settings.setBuiltInZoomControls(true);
+        settings.setDisplayZoomControls(false);//隐藏缩放按钮
         initWebView();
     }
 
@@ -67,7 +76,7 @@ public class NewsDetialsActivity extends ActionBarActivity {
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
                 loading.setVisibility(View.VISIBLE);
-                mWebView.setVisibility(View.GONE);
+                frameLayout.setVisibility(View.GONE);
                 fail.setVisibility(View.GONE);
             }
 
@@ -75,12 +84,12 @@ public class NewsDetialsActivity extends ActionBarActivity {
             public void onPageFinished(WebView view, String url) {
 
                 super.onPageFinished(view, url);
-                if(Boolean.parseBoolean(intent.getStringExtra("hideHead"))){
+                /*if(Boolean.parseBoolean(intent.getStringExtra("hideHead"))){
                     mWebView.setPaddingRelative(mWebView.getPaddingStart(), Utils.dip2px(getBaseContext(), -20),
                             mWebView.getPaddingEnd(), mWebView.getPaddingBottom());
-                }
+                }*/
                 loading.setVisibility(View.GONE);
-                mWebView.setVisibility(View.VISIBLE);
+                frameLayout.setVisibility(View.VISIBLE);
                 fail.setVisibility(View.GONE);
 
             }
@@ -90,7 +99,7 @@ public class NewsDetialsActivity extends ActionBarActivity {
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
                 loading.setVisibility(View.GONE);
-                mWebView.setVisibility(View.GONE);
+                frameLayout.setVisibility(View.GONE);
                 fail.setVisibility(View.VISIBLE);
             }
         };

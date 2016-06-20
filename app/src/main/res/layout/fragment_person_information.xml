@@ -41,7 +41,7 @@
                 android:layout_below="@id/iv_avatar"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/space_5"
-                android:textColor="@color/text_white"
+                android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18" />
 
             <ImageView
@@ -144,7 +144,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/space_5"
             android:text="@string/my_information_unlogin_tips"
-            android:textColor="@color/text_white"
+            android:textColor="@color/white"
             android:textSize="@dimen/text_size_18" />
     </RelativeLayout>
 </FrameLayout>

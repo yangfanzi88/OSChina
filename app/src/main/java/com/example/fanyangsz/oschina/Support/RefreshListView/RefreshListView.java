@@ -137,7 +137,7 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
                         refreshHeaderView();
                     }
                     headerView.setPadding(0, paddingTop, 0, 0);
-                    return true;
+//                    return true;
                 }
                 break;
             case MotionEvent.ACTION_UP:

@@ -1,6 +1,7 @@
 package com.example.fanyangsz.oschina.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -10,8 +11,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.fanyangsz.oschina.Api.HttpSDK;
+import com.example.fanyangsz.oschina.Beans.TweetBean;
 import com.example.fanyangsz.oschina.Beans.TweetBeans;
 import com.example.fanyangsz.oschina.R;
+import com.example.fanyangsz.oschina.view.CircleView.CircleImageActivity;
 
 /**
  * Created by fanyang.sz on 2016/2/23.
@@ -56,7 +60,7 @@ public class TweetAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        final ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
 
@@ -65,6 +69,7 @@ public class TweetAdapter extends BaseAdapter {
             holder.face = (ImageView) convertView.findViewById(R.id.iv_tweet_face);
             holder.content = (TextView) convertView.findViewById(R.id.tweet_item);
             holder.image = (ImageView) convertView.findViewById(R.id.iv_tweet_image);
+//            convertView.findViewById(R.id.iv_tweet_image).setVisibility(View.VISIBLE);
             holder.likeUsers = (TextView) convertView.findViewById(R.id.tv_likeusers);
             holder.time = (TextView) convertView.findViewById(R.id.tv_tweet_time);
             holder.platform = (TextView) convertView.findViewById(R.id.tv_tweet_platform);
@@ -76,17 +81,34 @@ public class TweetAdapter extends BaseAdapter {
             holder = (ViewHolder)convertView.getTag();
         }
 
-        holder.author.setText(datas.getTweet().get(position).getAuthor());
 
-        holder.content.setText(datas.getTweet().get(position).getBody());
+        TweetBean bean = datas.getTweet().get(position);
 
-//        holder.likeUsers.setText(datas.getTweet().get(position).getLikeCount()+"");
-        likeUserShow(holder.likeUsers,datas.getTweet().get(position).getLikeCount(), position);
-        holder.time.setText(datas.getTweet().get(position).getPubDate()+"");
-        holder.platform.setText(datas.getTweet().get(position).getAppclient()+"");
+        holder.author.setText(bean.getAuthor());
+        new HttpSDK().getAvatarImage(context,bean.getPortrait(),holder.face);
+        holder.content.setText(bean.getBody());
+        if(!bean.getImgSmall().equals("")){
+            holder.image.setVisibility(View.VISIBLE);
+            new HttpSDK().getTweetImage(context,bean.getImgSmall(),holder.image);
+            final String url = bean.getImgBig();
+            holder.image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    new CirclePopupWindow(context, url).showAtLocation(View.inflate(context,R.layout.layout_bottom_bar,null), Gravity.CENTER,0,0);
+                    Intent intent = new Intent(context, CircleImageActivity.class);
+                    intent.putExtra("bigUrl", url);
+                    context.startActivity(intent);
+                }
+            });
+        }else {
+            holder.image.setVisibility(View.GONE);
+        }
+//        holder.likeUsers.setText(bean.getLikeCount()+"");
+        likeUserShow(holder.likeUsers, bean.getLikeCount(), position);
+        holder.time.setText(bean.getPubDate());
+        holder.platform.setText(bean.getAppclient()+"");
 
-//        holder.tvLikeState.setText(datas.getTweetslist().getTweet().get(position).get);
-        holder.commentcount.setText(datas.getTweet().get(position).getCommentCount()+"");
+        holder.commentcount.setText(bean.getCommentCount());
         return convertView;
     }
 
@@ -106,4 +128,7 @@ public class TweetAdapter extends BaseAdapter {
         }
     }
 
+    public TweetBeans.TweetList getDatas() {
+        return datas;
+    }
 }
