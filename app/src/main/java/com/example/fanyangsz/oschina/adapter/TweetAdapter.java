@@ -85,11 +85,18 @@ public class TweetAdapter extends BaseAdapter {
         TweetBean bean = datas.getTweet().get(position);
 
         holder.author.setText(bean.getAuthor());
-        new HttpSDK().getAvatarImage(context,bean.getPortrait(),holder.face);
+        if(!bean.getPortrait().equals(holder.face.getTag())){
+            new HttpSDK().getAvatarImage(context,bean.getPortrait(),holder.face);
+            holder.face.setTag(bean.getPortrait());
+        }
+
         holder.content.setText(bean.getBody());
         if(!bean.getImgSmall().equals("")){
             holder.image.setVisibility(View.VISIBLE);
-            new HttpSDK().getTweetImage(context,bean.getImgSmall(),holder.image);
+            if(!bean.getImgSmall().equals(holder.image.getTag())){
+                new HttpSDK().getTweetImage(context,bean.getImgSmall(),holder.image);
+                holder.image.setTag(bean.getImgSmall());
+            }
             final String url = bean.getImgBig();
             holder.image.setOnClickListener(new View.OnClickListener() {
                 @Override

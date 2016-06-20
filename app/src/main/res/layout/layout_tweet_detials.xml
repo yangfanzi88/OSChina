@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -10,20 +11,22 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/space_8">
 
-        <ImageView
+        <com.example.fanyangsz.oschina.widgets.CircleImageView
             android:id="@+id/iv_avatar"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginRight="@dimen/space_8"
             android:src="@drawable/widget_dface"
-            android:contentDescription="@null" />
+            android:contentDescription="@null"
+            app:border_width="0.5dp"
+            app:border_color="@color/black"/>
 
         <TextView
             android:id="@+id/tv_name"
             style="@style/list_cell_text"
             android:layout_toRightOf="@id/iv_avatar"
-            android:textColor="@color/tweet_author"
-            android:textSize="@dimen/text_size_14"
+            android:textColor="@color/tab_background"
+            android:textSize="@dimen/text_size_16"
             tools:text="火蚁" />
 
         <TextView
@@ -58,6 +61,9 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/space_10"
         android:textSize="@dimen/text_size_16"
+        android:focusable="false"
+        android:autoLink="all"
+        android:focusableInTouchMode="false"
         android:textColor="@color/black"
         />
     <ImageView

@@ -99,9 +99,18 @@ public class CircleContentOneFragment extends Fragment implements HttpSDK.OnTwee
         if (datas != null) {
             if (currentPage == 0) {
                 listView.hideHeaderView();
-                currentTweet = datas;
-                myAdapter = new TweetAdapter(currentTweet, getActivity());
-                listView.setAdapter(myAdapter);
+                if(currentTweet != null){
+                    if(!currentTweet.getTweet().get(0).getPubDate().equals(datas.getTweet().get(0).getPubDate())){
+                        currentTweet = datas;
+                        myAdapter = new TweetAdapter(currentTweet, getActivity());
+                        listView.setAdapter(myAdapter);
+                    }
+                }else{
+                    currentTweet = datas;
+                    myAdapter = new TweetAdapter(currentTweet, getActivity());
+                    listView.setAdapter(myAdapter);
+                }
+
             } else {
                 listView.hideFooterView();
                 currentTweet.getTweet().addAll(datas.getTweet());
