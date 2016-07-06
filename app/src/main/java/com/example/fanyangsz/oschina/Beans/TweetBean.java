@@ -15,6 +15,9 @@ import java.util.List;
 @XStreamAlias("tweet")
 public class TweetBean extends BaseBean implements Serializable {
 
+    public static int NORMAL_TWEET = 0;
+    public static int HOT_TWEET = -1;
+
     @XStreamAlias("portrait")
     private String portrait;
     @XStreamAlias("author")

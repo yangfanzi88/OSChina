@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
+import com.example.fanyangsz.oschina.Api.HttpSDK;
 import com.example.fanyangsz.oschina.R;
 import com.example.fanyangsz.oschina.view.BottomBar.BottomBarFragment;
 import com.example.fanyangsz.oschina.view.CircleView.CircleViewpagerFragment;
@@ -75,7 +76,8 @@ public class MainActivity extends Activity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-
+        //初始化httpSDK
+        HttpSDK.newInstance(getApplicationContext());
     }
 
     @Override

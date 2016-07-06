@@ -140,7 +140,7 @@ public class NewsContentOneFragment extends Fragment implements HttpSDK.OnNewsCa
     }
 
     private void requestNews(int currentPage){
-        new HttpSDK().getInfoNews(getActivity().getApplicationContext(), this, currentPage);
+        HttpSDK.newInstance().getInfoNews( this, currentPage);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.example.fanyangsz.oschina.view.QuickOptionView;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,9 +13,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.fanyangsz.oschina.Api.HttpSDK;
+import com.example.fanyangsz.oschina.Beans.TweetBean;
 import com.example.fanyangsz.oschina.R;
+import com.example.fanyangsz.oschina.view.LoginView.LoginFragment;
 
-public class TweetActivity extends ActionBarActivity {
+public class PostTweetActivity extends ActionBarActivity {
 
     private EditText editText;
     private ImageView userPicture;
@@ -125,6 +129,22 @@ public class TweetActivity extends ActionBarActivity {
                 this.finish();
                 return true;
             case R.id.action_publish:
+                TweetBean bean = new TweetBean();
+                if(!TextUtils.isEmpty(editText.getText())){
+                    bean.setBody(editText.getText().toString());
+                    bean.setAuthorid(LoginFragment.getLoginUser(this).getUser().getId());
+                    HttpSDK.newInstance().pubTweet(new HttpSDK.onPubTweetCallBack() {
+                        @Override
+                        public void onSuccess() {
+                            PostTweetActivity.this.finish();
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    },bean);
+                }
 
         }
         return super.onOptionsItemSelected(item);

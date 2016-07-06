@@ -74,7 +74,7 @@ public class BlogsAdapter extends BaseAdapter {
         return convertView;
     }
 
-    static class ViewHolder{
+    private static class ViewHolder{
         ImageView typeIcon;
         TextView newsTitle;
         TextView content;

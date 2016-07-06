@@ -5,7 +5,8 @@
     <color name="news_title">#000</color>
     <color name="tab_background">#199005</color>
     <color name="tab_line_color">#519</color>
-    <color name="white">#fff</color>
+    <color name="white">#ffffff</color>
+    <color name="white40">#66ffffff</color>
     <color name="white50">#80ffffff</color>
     <color name="black00">#00000000</color>
     <color name="black">#000000</color>
@@ -15,4 +16,8 @@
     <color name="my_information_option_pressed">#18be40</color>
     <color name="error_tips">#900519</color>
     <color name="tweet_author">#49e46f</color>
+    <color name="blue">#0000ff</color>
+
+    <color name="main_link_text_color">#ffbedfff</color>
+    <color name="timeline_clickable_text_highlighted_background">#ffbedfff</color>
 </resources>

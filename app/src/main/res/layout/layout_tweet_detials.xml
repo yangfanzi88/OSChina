@@ -146,5 +146,29 @@
         android:padding="8dp"
         android:textColor="@color/black"
         android:visibility="gone"/>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_10">
+        <com.example.fanyangsz.oschina.Support.RefreshListView.RefreshListView
+            android:id="@+id/listView_comment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ccffffff"
+            android:choiceMode="singleChoice"
+            android:divider="#1A000000"
+            android:dividerHeight="0.5dp"
+            android:visibility="visible"/>
+        <TextView
+            android:id="@+id/tweet_no_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/main_gray"
+            android:text="@string/tweet_no_comment"
+            android:textSize="@dimen/text_size_20"/>
+    </FrameLayout>
+
+
 
 </LinearLayout>

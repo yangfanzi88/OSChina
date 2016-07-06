@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/space_10">
+
+    <com.example.fanyangsz.oschina.widgets.CircleImageView
+        android:id="@+id/iv_avatar"
+        style="@style/user_face_image"
+        android:layout_marginRight="@dimen/space_8"
+        android:contentDescription="@null"
+        app:border_width="0.5dp"
+        app:border_color="@color/black"/>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/iv_avatar"
+        android:text="@string/tweet_no_comment"
+        android:textColor="@color/tab_background"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_alignParentRight="true"
+        tools:text="刚刚"
+        style="@style/list_text_info" />
+
+    <!--<net.oschina.app.widget.FloorView
+        android:id="@+id/ly_refers"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_name"
+        android:layout_marginTop="@dimen/space_4"
+        android:layout_toRightOf="@id/iv_avatar"
+        android:orientation="vertical"
+        android:visibility="gone" />-->
+
+    <com.example.fanyangsz.oschina.widgets.TweetTextView
+        android:id="@+id/tv_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_8"
+        android:layout_below="@id/tv_name"
+        android:layout_toRightOf="@id/iv_avatar"
+        android:textColor="@color/black"
+        tools:text="评论内容"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:id="@+id/ly_relies"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_content"
+        android:layout_marginTop="@dimen/space_4"
+        android:layout_toRightOf="@id/iv_avatar"
+        android:orientation="vertical"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_from"
+        android:layout_below="@id/ly_relies"
+        android:layout_marginTop="@dimen/space_8"
+        style="@style/list_text_info"
+        android:layout_toRightOf="@id/iv_avatar"
+        tools:text="Android"
+        android:textColor="@color/text_gray"
+        android:drawablePadding="@dimen/space_4"
+        android:gravity="center_vertical" />
+
+</RelativeLayout>

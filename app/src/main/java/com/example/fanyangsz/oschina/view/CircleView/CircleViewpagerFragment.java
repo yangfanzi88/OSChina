@@ -20,7 +20,6 @@ import com.example.fanyangsz.oschina.R;
 import com.example.fanyangsz.oschina.adapter.myFragmentPageradapter;
 import com.example.fanyangsz.oschina.view.NewsView.NewsContentFourFragment;
 import com.example.fanyangsz.oschina.view.NewsView.NewsContentThreeFragment;
-import com.example.fanyangsz.oschina.view.NewsView.NewsContentTwoFragment;
 
 import java.util.ArrayList;
 
@@ -38,7 +37,7 @@ public class CircleViewpagerFragment extends Fragment  {
     ImageView imageView;
 
     CircleContentOneFragment mCircleContentOneFragment = new CircleContentOneFragment();
-    NewsContentTwoFragment mNewsContentTwoFragment = new NewsContentTwoFragment();
+    CircleContentTwoFragment mCircleContentTwoFragment = new CircleContentTwoFragment();
     NewsContentThreeFragment mNewsContentThreeFragment = new NewsContentThreeFragment();
     NewsContentFourFragment mNewsContentFourFragment = new NewsContentFourFragment();
 
@@ -60,10 +59,11 @@ public class CircleViewpagerFragment extends Fragment  {
         viewPager = (ViewPager) view.findViewById(R.id.circle_viewpager);
         mFragment = new ArrayList<Fragment>();
         mFragment.add(mCircleContentOneFragment);
-        mFragment.add(mNewsContentTwoFragment);
+        mFragment.add(mCircleContentTwoFragment);
         mFragment.add(mNewsContentThreeFragment);
         viewPager.setAdapter(new myFragmentPageradapter(getFragmentManager(),mFragment));
         viewPager.setCurrentItem(0);
+        viewPager.setOffscreenPageLimit(2);
         viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
     }
 
@@ -106,7 +106,7 @@ public class CircleViewpagerFragment extends Fragment  {
         if(!getActivity().isDestroyed()) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.remove(mCircleContentOneFragment);
-            transaction.remove(mNewsContentTwoFragment);
+            transaction.remove(mCircleContentTwoFragment);
             transaction.remove(mNewsContentThreeFragment);
             transaction.commit();
         }

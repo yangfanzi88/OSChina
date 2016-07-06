@@ -48,7 +48,7 @@
             android:name=".view.QuickOptionView.QuickOptionActivity"
             android:theme="@style/Theme.AppCompat.Dialog.MinWidth"></activity>
         <activity
-            android:name=".view.QuickOptionView.TweetActivity"
+            android:name=".view.QuickOptionView.PostTweetActivity"
             android:label="@string/user_tweet"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"></activity>
         <activity

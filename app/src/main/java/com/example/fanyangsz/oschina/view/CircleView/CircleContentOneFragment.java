@@ -29,6 +29,12 @@ public class CircleContentOneFragment extends Fragment implements HttpSDK.OnTwee
     private int currentPage = 0;
     private View view, loadingView, failView;
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,6 +67,7 @@ public class CircleContentOneFragment extends Fragment implements HttpSDK.OnTwee
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("data", bean);
                     intent.putExtras(bundle);
+                    intent.putExtra("id",bean.getId());
                     getActivity().startActivity(intent);
                 } else {
                     return;
@@ -70,8 +77,14 @@ public class CircleContentOneFragment extends Fragment implements HttpSDK.OnTwee
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        currentTweet = null;
+    }
+
     private void requestTweets(int currentPage) {
-        new HttpSDK().getTweet(getActivity(), this, currentPage);
+        HttpSDK.newInstance().getTweet(this, currentPage, TweetBean.NORMAL_TWEET);
     }
 
     @Override

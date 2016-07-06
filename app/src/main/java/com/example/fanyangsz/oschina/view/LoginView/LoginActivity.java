@@ -41,7 +41,7 @@ public class LoginActivity extends ActionBarActivity implements HttpSDK.onLoginC
         public void onClick(View v) {
             String username = editAccount.getText().toString();
             String password = editPassWord.getText().toString();
-            new HttpSDK().login(getBaseContext(),username, password, LoginActivity.this);
+            HttpSDK.newInstance().login(username, password, LoginActivity.this);
             myDialog.show();
         }
     }

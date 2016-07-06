@@ -76,7 +76,7 @@ public class NewsAdapter extends BaseAdapter{
         holder.comment.setText(datas.getNews().get(position).getCommentCount()+"");
         return convertView;
     }
-    static class ViewHolder{
+    private static class ViewHolder{
         ImageView todayIcon;
         TextView newsTitle;
         TextView content;

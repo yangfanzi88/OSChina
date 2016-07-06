@@ -20,7 +20,7 @@ public class CircleImageActivity extends Activity {
         ImageView imageView = (ImageView) findViewById(R.id.tweet_big_image);
         intent = getIntent();
         url = intent.getStringExtra("bigUrl");
-        new HttpSDK().getTweetImage(this,url,imageView);
+        HttpSDK.newInstance().getTweetImage(url,imageView,HttpSDK.IMAGE_TYPE_0);
 
     }
 }

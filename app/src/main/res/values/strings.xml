@@ -29,6 +29,8 @@
 
     <string name="login">登陆</string>
     <string name="my_information_unlogin_tips">未登录</string>
+    <string name="qr_code_tip">扫一扫上面的二维码，加我为好友</string>
+    <string name="qr_code_tip2">(长按保存到本地)</string>
 
     <string name="user_score">积分</string>
     <string name="favorite">收藏</string>
@@ -53,4 +55,5 @@
     <string name="title_activity_activity_tweet">activity_tweet</string>
 
     <string name="tweet_details">动弹详情</string>
+    <string name="tweet_no_comment">暂无评论</string>
 </resources>

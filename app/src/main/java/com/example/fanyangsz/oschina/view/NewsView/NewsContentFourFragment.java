@@ -80,7 +80,7 @@ public class NewsContentFourFragment extends Fragment implements HttpSDK.onBlogC
     }
 
     private void requestBlogs(int currentPage){
-        new HttpSDK().getBlog(getActivity(), this, currentPage, BlogBeans.CATALOG_RECOMMEND);
+        HttpSDK.newInstance().getBlog( this, currentPage, BlogBeans.CATALOG_RECOMMEND);
     }
 
     @Override

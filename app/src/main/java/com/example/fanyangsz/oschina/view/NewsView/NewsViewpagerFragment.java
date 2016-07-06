@@ -83,6 +83,7 @@ public class NewsViewpagerFragment extends Fragment{
         mFragment.add(mNewsContentFourFragment);
         viewPager.setAdapter(new myFragmentPageradapter(getFragmentManager(), mFragment));
         viewPager.setCurrentItem(0);
+        viewPager.setOffscreenPageLimit(3);
         viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
     }
 

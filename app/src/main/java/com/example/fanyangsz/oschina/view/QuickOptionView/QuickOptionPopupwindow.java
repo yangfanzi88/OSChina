@@ -61,7 +61,7 @@ public class QuickOptionPopupwindow extends PopupWindow{
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.quick_option_text:
-                    activity.startActivity(new Intent(activity,TweetActivity.class));
+                    activity.startActivity(new Intent(activity,PostTweetActivity.class));
                     dismiss();
                     break;
                 case R.id.quick_option_album:

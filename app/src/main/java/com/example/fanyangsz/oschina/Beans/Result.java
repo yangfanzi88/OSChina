@@ -19,22 +19,22 @@ public class Result implements Serializable {
     private String errorMessage;
 
     public boolean OK() {
-	return errorCode == 1;
+        return errorCode == 1;
     }
 
     public int getErrorCode() {
-	return errorCode;
+        return errorCode;
     }
 
     public void setErrorCode(int errorCode) {
-	this.errorCode = errorCode;
+        this.errorCode = errorCode;
     }
 
     public String getErrorMessage() {
-	return errorMessage;
+        return errorMessage;
     }
 
     public void setErrorMessage(String errorMessage) {
-	this.errorMessage = errorMessage;
+        this.errorMessage = errorMessage;
     }
 }
