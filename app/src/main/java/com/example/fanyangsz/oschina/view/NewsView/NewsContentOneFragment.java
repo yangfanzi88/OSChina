@@ -3,6 +3,7 @@ package com.example.fanyangsz.oschina.view.NewsView;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -10,12 +11,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 
 import com.example.fanyangsz.oschina.Api.HttpSDK;
 import com.example.fanyangsz.oschina.Beans.NewsBean;
 import com.example.fanyangsz.oschina.Beans.NewsBeans;
 import com.example.fanyangsz.oschina.R;
+import com.example.fanyangsz.oschina.Support.Cache.CacheConfig;
 import com.example.fanyangsz.oschina.Support.RefreshListView.RefreshListView;
 import com.example.fanyangsz.oschina.adapter.NewsAdapter;
 
@@ -28,10 +31,11 @@ public class NewsContentOneFragment extends Fragment implements HttpSDK.OnNewsCa
     private RefreshListView listView;
 
     NewsAdapter myAdapter;
-    NewsBeans.NewsList currentNews;
+    NewsBeans.NewsList currentNews = new NewsBeans.NewsList();
     private int currentPage = 0;
 
     View view,loadingView,failView;
+
 
     @Override
     public void onAttach(Context context) {
@@ -60,7 +64,9 @@ public class NewsContentOneFragment extends Fragment implements HttpSDK.OnNewsCa
         listView.setVisibility(View.GONE);
         loadingView.setVisibility(View.VISIBLE);
 
-        requestNews(currentPage);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(CacheConfig.SHARED_PAGE,Context.MODE_PRIVATE);
+        currentPage = sharedPreferences.getInt(CacheConfig.KEY_NEWS_PAGE,0);
+        requestNews(currentPage, CacheConfig.CacheMode.auto);
 
         listView.setOnRefreshListener(this);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -139,8 +145,8 @@ public class NewsContentOneFragment extends Fragment implements HttpSDK.OnNewsCa
         Log.e("yfyf", "onDetach");
     }
 
-    private void requestNews(int currentPage){
-        HttpSDK.newInstance().getInfoNews( this, currentPage);
+    private void requestNews(int currentPage, Enum cacheMode){
+        HttpSDK.newInstance().getInfoNews( this, currentPage, cacheMode);
     }
 
     @Override
@@ -152,7 +158,7 @@ public class NewsContentOneFragment extends Fragment implements HttpSDK.OnNewsCa
         view.findViewById(R.id.error_refresh).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestNews(currentPage);
+                requestNews(currentPage, CacheConfig.CacheMode.auto);
             }
         });
     }
@@ -166,10 +172,18 @@ public class NewsContentOneFragment extends Fragment implements HttpSDK.OnNewsCa
                 currentNews = news;
                 myAdapter = new NewsAdapter(currentNews,getActivity());
                 listView.setAdapter(myAdapter);
+//                listState[0] = 0;
+//                listState[1] = 0;
             } else{
                 listView.hideFooterView();
-                currentNews.getNews().addAll( news.getNews());
-                myAdapter.notifyDataSetChanged();
+                if(currentNews != null && currentNews.getNews() != null){
+                    currentNews.getNews().addAll( news.getNews());
+                    myAdapter.notifyDataSetChanged();
+                }else{
+                    currentNews.setNews(news.getNews());
+                    myAdapter = new NewsAdapter(currentNews,getActivity());
+                    listView.setAdapter(myAdapter);
+                }
             }
 
             loadingView.setVisibility(View.GONE);
@@ -181,14 +195,18 @@ public class NewsContentOneFragment extends Fragment implements HttpSDK.OnNewsCa
     @Override
     public void onDownPullRefresh() {
         currentPage = 0;
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(CacheConfig.SHARED_PAGE,Context.MODE_PRIVATE);
+        sharedPreferences.edit().putInt(CacheConfig.KEY_NEWS_PAGE,currentPage).apply();
 //        new HttpSDK().getInfoNews(getActivity(), this, currentPage);
-        requestNews(currentPage);
+        requestNews(currentPage, CacheConfig.CacheMode.servicePriority);
     }
 
     @Override
     public void onLoadingMore() {
         currentPage ++;
-        requestNews(currentPage);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(CacheConfig.SHARED_PAGE,Context.MODE_PRIVATE);
+        sharedPreferences.edit().putInt(CacheConfig.KEY_NEWS_PAGE,currentPage).apply();
+        requestNews(currentPage, CacheConfig.CacheMode.servicePriority);
 //        new HttpSDK().getInfoNews(getActivity(), this, currentPage);
 //        listView.hideFooterView();
     }
@@ -197,40 +215,4 @@ public class NewsContentOneFragment extends Fragment implements HttpSDK.OnNewsCa
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
-
-    /*public class NewsItemView extends {
-
-        ImageView todayIcon;
-        TextView newsTitle;
-        TextView content;
-        TextView source;
-        TextView time;
-        TextView comment;
-        public NewsItemView(){}
-        @Override
-        public void bindingData(View convertView, Serializable data) {
-            newsTitle.setText(((NewsBean) data).getTitle());
-            content.setText(((NewsBean) data).getBody());
-            source.setText(((NewsBean) data).getAuthor());
-            time.setText(((NewsBean) data).getPubDate());
-            comment.setText(((NewsBean) data).getCommentCount()+"");
-        }
-
-        @Override
-        public void bindingView(View convertView) {
-            View view = View.inflate(getContext(), R.layout.list_item_news, null);
-            todayIcon = (ImageView) view.findViewById(R.id.iv_tip);
-            newsTitle = (TextView) view.findViewById(R.id.tv_title);
-            content = (TextView) view.findViewById(R.id.tv_description);
-            source = (TextView) view.findViewById(R.id.tv_source);
-            time = (TextView) view.findViewById(R.id.tv_time);
-            comment = (TextView) view.findViewById(R.id.tv_comment_count);
-        }
-
-        @Override
-        public int inflateViewId() {
-            return R.layout.list_item_news;
-        }
-    }*/
-
 }

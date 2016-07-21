@@ -65,6 +65,8 @@ public class QuickOptionPopupwindow extends PopupWindow{
                     dismiss();
                     break;
                 case R.id.quick_option_album:
+                    Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);//调用android的图库
+                    activity.startActivityForResult(i, 2);
                     break;
                 case R.id.quick_option_photo:
                     activity.startActivityForResult(new Intent("android.media.action.IMAGE_CAPTURE"), 2);

@@ -6,6 +6,9 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.WindowManager;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by wangdan on 15-3-26.
  */
@@ -66,5 +69,15 @@ public class Utils {
         DisplayMetrics metric = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(metric);
         return metric.heightPixels;
+    }
+
+    public static String replaceBlank(String str) {
+        String dest = "";
+        if (str!=null) {
+            Pattern p = Pattern.compile("\\s*|\t|\r|\n");
+            Matcher m = p.matcher(str);
+            dest = m.replaceAll("");
+        }
+        return dest;
     }
 }

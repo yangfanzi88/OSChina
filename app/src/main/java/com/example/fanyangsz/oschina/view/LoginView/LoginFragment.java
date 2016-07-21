@@ -14,7 +14,11 @@ import android.widget.TextView;
 import com.example.fanyangsz.oschina.Api.HttpSDK;
 import com.example.fanyangsz.oschina.Beans.LoginUserBean;
 import com.example.fanyangsz.oschina.R;
-import com.example.fanyangsz.oschina.widgets.SharedPreSaveObject;
+import com.example.fanyangsz.oschina.Support.Cache.CacheConfig;
+import com.example.fanyangsz.oschina.Support.Cache.SharedPreSaveObject;
+
+import static com.example.fanyangsz.oschina.Support.Cache.CacheConfig.KEY_USER_LOGIN;
+import static com.example.fanyangsz.oschina.Support.Cache.CacheConfig.SHARED_USER_LOGIN;
 
 /**
  * Created by fanyang.sz on 2016/1/13.
@@ -25,8 +29,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     ImageView userIcon,userGender,userCode;
     TextView userName,userScore,userFavorite,userFollowing,userFollower;
 //    static LoginUserBean loginUserBean;
-    public static String SHARED_USER_LOGIN = "user";
-    public static String KEY_USER_LOGIN = "loginStatus";
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

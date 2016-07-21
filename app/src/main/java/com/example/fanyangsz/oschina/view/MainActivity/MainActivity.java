@@ -22,6 +22,7 @@ import android.widget.PopupWindow;
 
 import com.example.fanyangsz.oschina.Api.HttpSDK;
 import com.example.fanyangsz.oschina.R;
+import com.example.fanyangsz.oschina.Support.util.OSChinaDB;
 import com.example.fanyangsz.oschina.view.BottomBar.BottomBarFragment;
 import com.example.fanyangsz.oschina.view.CircleView.CircleViewpagerFragment;
 import com.example.fanyangsz.oschina.view.DrawerFragment.NavigationDrawerFragment;
@@ -78,6 +79,8 @@ public class MainActivity extends Activity
 
         //初始化httpSDK
         HttpSDK.newInstance(getApplicationContext());
+//        //初始化DB表
+//        OSChinaDB.setInitDB(getApplicationContext());
     }
 
     @Override

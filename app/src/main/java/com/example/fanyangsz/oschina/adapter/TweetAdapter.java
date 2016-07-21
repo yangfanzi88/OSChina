@@ -78,7 +78,7 @@ public class TweetAdapter extends BaseAdapter{
         }
 
         holder.content.setText(bean.getBody());
-        if(!bean.getImgSmall().equals("")){
+        if(bean.getImgSmall()!=null&&!bean.getImgSmall().isEmpty()){
             holder.image.setVisibility(View.VISIBLE);
             if(!bean.getImgSmall().equals(holder.image.getTag())){
                 HttpSDK.newInstance().getTweetImage(bean.getImgSmall(),holder.image, HttpSDK.IMAGE_TYPE_0);

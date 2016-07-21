@@ -1,4 +1,4 @@
-package com.example.fanyangsz.oschina.widgets;
+package com.example.fanyangsz.oschina.Support.Cache;
 
 import android.content.Context;
 import android.content.SharedPreferences;

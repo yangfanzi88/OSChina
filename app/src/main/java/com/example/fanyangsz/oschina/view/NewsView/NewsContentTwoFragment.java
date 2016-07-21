@@ -1,7 +1,9 @@
 package com.example.fanyangsz.oschina.view.NewsView;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -15,6 +17,7 @@ import com.example.fanyangsz.oschina.Api.HttpSDK;
 import com.example.fanyangsz.oschina.Beans.NewsBean;
 import com.example.fanyangsz.oschina.Beans.NewsBeans;
 import com.example.fanyangsz.oschina.R;
+import com.example.fanyangsz.oschina.Support.Cache.CacheConfig;
 import com.example.fanyangsz.oschina.Support.RefreshListView.RefreshListView;
 import com.example.fanyangsz.oschina.adapter.NewsAdapter;
 
@@ -43,7 +46,10 @@ public class NewsContentTwoFragment extends Fragment implements HttpSDK.OnNewsCa
         failView.setVisibility(View.GONE);
         listView.setVisibility(View.GONE);
         loadingView.setVisibility(View.VISIBLE);
-        requestNews(currentPage);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(CacheConfig.SHARED_PAGE, Context.MODE_PRIVATE);
+        currentPage = sharedPreferences.getInt(CacheConfig.KEY_HOT_NEWS_PAGE,0);
+        requestNews(currentPage, CacheConfig.CacheMode.auto);
 
         listView.setOnRefreshListener(this);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -72,8 +78,8 @@ public class NewsContentTwoFragment extends Fragment implements HttpSDK.OnNewsCa
         super.onCreate(savedInstanceState);
     }
 
-    private void requestNews(int currentPage){
-        HttpSDK.newInstance().getHotNews(this, currentPage );
+    private void requestNews(int currentPage, Enum cacheMode){
+        HttpSDK.newInstance().getHotNews(this, currentPage, cacheMode);
     }
 
     @Override
@@ -85,7 +91,7 @@ public class NewsContentTwoFragment extends Fragment implements HttpSDK.OnNewsCa
         view.findViewById(R.id.error_refresh).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestNews(currentPage);
+                requestNews(currentPage, CacheConfig.CacheMode.auto);
             }
         });
     }
@@ -99,8 +105,14 @@ public class NewsContentTwoFragment extends Fragment implements HttpSDK.OnNewsCa
             listView.setAdapter(myAdapter);
         } else{
             listView.hideFooterView();
-            currentNews.getNews().addAll( news.getNews());
-            myAdapter.notifyDataSetChanged();
+            if(currentNews != null && currentNews.getNews() != null){
+                currentNews.getNews().addAll( news.getNews());
+                myAdapter.notifyDataSetChanged();
+            }else{
+                currentNews.setNews(news.getNews());
+                myAdapter = new NewsAdapter(currentNews,getActivity());
+                listView.setAdapter(myAdapter);
+            }
         }
         loadingView.setVisibility(View.GONE);
         listView.setVisibility(View.VISIBLE);
@@ -109,14 +121,18 @@ public class NewsContentTwoFragment extends Fragment implements HttpSDK.OnNewsCa
     @Override
     public void onDownPullRefresh() {
         currentPage = 0;
-        requestNews(currentPage);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(CacheConfig.SHARED_PAGE,Context.MODE_PRIVATE);
+        sharedPreferences.edit().putInt(CacheConfig.KEY_HOT_NEWS_PAGE,currentPage).apply();
+        requestNews(currentPage,CacheConfig.CacheMode.servicePriority);
 //        new HttpSDK().getHotNews(getActivity(), this, currentPage);
     }
 
     @Override
     public void onLoadingMore() {
         currentPage ++;
-//        requestNews(currentPage);
-//        new HttpSDK().getHotNews(getActivity(), this, currentPage);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(CacheConfig.SHARED_PAGE,Context.MODE_PRIVATE);
+        sharedPreferences.edit().putInt(CacheConfig.KEY_HOT_NEWS_PAGE,currentPage).apply();
+        listView.hideFooterView();
+//        requestNews(currentPage,CacheConfig.CacheMode.servicePriority);
     }
 }

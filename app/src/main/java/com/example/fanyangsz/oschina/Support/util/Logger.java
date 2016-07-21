@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 
 public class Logger {
 
-    public final static String TAG = "OneTouchStream";
+    public final static String TAG = "OSChina";
 
     public static boolean DEBUG = true;
 

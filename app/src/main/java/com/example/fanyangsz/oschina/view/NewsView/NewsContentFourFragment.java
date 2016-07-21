@@ -15,6 +15,7 @@ import com.example.fanyangsz.oschina.Api.HttpSDK;
 import com.example.fanyangsz.oschina.Beans.BlogBean;
 import com.example.fanyangsz.oschina.Beans.BlogBeans;
 import com.example.fanyangsz.oschina.R;
+import com.example.fanyangsz.oschina.Support.Cache.CacheConfig;
 import com.example.fanyangsz.oschina.Support.RefreshListView.RefreshListView;
 import com.example.fanyangsz.oschina.adapter.BlogsAdapter;
 
@@ -41,7 +42,7 @@ public class NewsContentFourFragment extends Fragment implements HttpSDK.onBlogC
         failView.setVisibility(View.GONE);
         listView.setVisibility(View.GONE);
         loadingView.setVisibility(View.VISIBLE);
-        requestBlogs(currentPage);
+        requestBlogs(currentPage, CacheConfig.CacheMode.auto);
 
         listView.setOnRefreshListener(this);
         /*listView.setAdapter(new ArrayAdapter<String>(
@@ -79,8 +80,8 @@ public class NewsContentFourFragment extends Fragment implements HttpSDK.onBlogC
         super.onCreate(savedInstanceState);
     }
 
-    private void requestBlogs(int currentPage){
-        HttpSDK.newInstance().getBlog( this, currentPage, BlogBeans.CATALOG_RECOMMEND);
+    private void requestBlogs(int currentPage, Enum cacheMode){
+        HttpSDK.newInstance().getBlog( this, currentPage, BlogBeans.CATALOG_RECOMMEND, cacheMode);
     }
 
     @Override
@@ -91,7 +92,7 @@ public class NewsContentFourFragment extends Fragment implements HttpSDK.onBlogC
         view.findViewById(R.id.error_refresh).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestBlogs(currentPage);
+                requestBlogs(currentPage, CacheConfig.CacheMode.auto);
             }
         });
     }
@@ -115,12 +116,12 @@ public class NewsContentFourFragment extends Fragment implements HttpSDK.onBlogC
     @Override
     public void onDownPullRefresh() {
         currentPage = 0;
-        requestBlogs(currentPage);
+        requestBlogs(currentPage, CacheConfig.CacheMode.servicePriority);
     }
 
     @Override
     public void onLoadingMore() {
         currentPage ++;
-        requestBlogs(currentPage);
+        requestBlogs(currentPage, CacheConfig.CacheMode.servicePriority);
     }
 }

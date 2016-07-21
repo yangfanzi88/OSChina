@@ -14,6 +14,7 @@ import com.example.fanyangsz.oschina.Api.HttpSDK;
 import com.example.fanyangsz.oschina.Beans.TweetBean;
 import com.example.fanyangsz.oschina.Beans.TweetBeans;
 import com.example.fanyangsz.oschina.R;
+import com.example.fanyangsz.oschina.Support.Cache.CacheConfig;
 import com.example.fanyangsz.oschina.Support.RefreshListView.RefreshListView;
 import com.example.fanyangsz.oschina.adapter.TweetAdapter;
 
@@ -48,7 +49,7 @@ public class CircleContentOneFragment extends Fragment implements HttpSDK.OnTwee
         listView.setVisibility(View.GONE);
         loadingView.setVisibility(View.VISIBLE);
 
-        requestTweets(currentPage);
+        requestTweets(currentPage, CacheConfig.CacheMode.auto);
         listView.setOnRefreshListener(this);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -83,8 +84,8 @@ public class CircleContentOneFragment extends Fragment implements HttpSDK.OnTwee
         currentTweet = null;
     }
 
-    private void requestTweets(int currentPage) {
-        HttpSDK.newInstance().getTweet(this, currentPage, TweetBean.NORMAL_TWEET);
+    private void requestTweets(int currentPage, Enum cacheMode) {
+        HttpSDK.newInstance().getTweet(this, currentPage, TweetBean.NORMAL_TWEET, cacheMode);
     }
 
     @Override
@@ -102,7 +103,7 @@ public class CircleContentOneFragment extends Fragment implements HttpSDK.OnTwee
         view.findViewById(R.id.error_refresh).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestTweets(currentPage);
+                requestTweets(currentPage, CacheConfig.CacheMode.auto);
             }
         });
     }
@@ -137,12 +138,12 @@ public class CircleContentOneFragment extends Fragment implements HttpSDK.OnTwee
     @Override
     public void onDownPullRefresh() {
         currentPage = 0;
-        requestTweets(currentPage);
+        requestTweets(currentPage, CacheConfig.CacheMode.servicePriority);
     }
 
     @Override
     public void onLoadingMore() {
         currentPage++;
-        requestTweets(currentPage);
+        requestTweets(currentPage, CacheConfig.CacheMode.servicePriority);
     }
 }

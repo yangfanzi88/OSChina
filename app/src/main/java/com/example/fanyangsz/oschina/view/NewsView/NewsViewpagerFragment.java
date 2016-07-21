@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -14,9 +15,12 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.fanyangsz.oschina.R;
+import com.example.fanyangsz.oschina.Support.util.Utils;
 import com.example.fanyangsz.oschina.adapter.myFragmentPageradapter;
 
 import java.util.ArrayList;
@@ -28,6 +32,7 @@ public class NewsViewpagerFragment extends Fragment{
 
     private ArrayList<Fragment> mFragment;
     private View view;
+    private static int currentItem = 0;
     ViewPager viewPager;
     TextView title1;
     TextView title2;
@@ -82,7 +87,7 @@ public class NewsViewpagerFragment extends Fragment{
         mFragment.add(mNewsContentThreeFragment);
         mFragment.add(mNewsContentFourFragment);
         viewPager.setAdapter(new myFragmentPageradapter(getFragmentManager(), mFragment));
-        viewPager.setCurrentItem(0);
+        viewPager.setCurrentItem(currentItem);
         viewPager.setOffscreenPageLimit(3);
         viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
     }
@@ -93,7 +98,16 @@ public class NewsViewpagerFragment extends Fragment{
         title3 = (TextView)view.findViewById(R.id.news_viewpager_title_3);
         title4 = (TextView)view.findViewById(R.id.news_viewpager_title_4);
 
-        title1.setTextColor(Color.GREEN);
+
+        if(currentItem == 0){
+            title1.setTextColor(Color.GREEN);
+        }else if(currentItem == 1){
+            title2.setTextColor(Color.GREEN);
+        }else if(currentItem == 2){
+            title3.setTextColor(Color.GREEN);
+        }else if(currentItem == 3){
+            title4.setTextColor(Color.GREEN);
+        }
 
         title1.setOnClickListener(new MyOnClickListener(0));
         title2.setOnClickListener(new MyOnClickListener(1));
@@ -114,8 +128,13 @@ public class NewsViewpagerFragment extends Fragment{
             ivCursorWidth = tabWidth;
         }
         offsetX = (tabWidth - ivCursorWidth) / 2;
-    }
 
+        //viewpager恢复页面时  image要跟着表头走
+        Animation animation = new TranslateAnimation(0, tabWidth * currentItem + offsetX, 0, 0);// 显然这个比较简洁，只有一行代码。
+        animation.setFillAfter(true);// True:图片停在动画结束位置
+        animation.setDuration(0);
+        imageView.startAnimation(animation);
+    }
 
 
     public class MyOnClickListener implements View.OnClickListener{
@@ -123,26 +142,26 @@ public class NewsViewpagerFragment extends Fragment{
 
         public MyOnClickListener(int i) {
             index = i;
-
         }
 
         @Override
         public void onClick(View v) {
             viewPager.setCurrentItem(index);
-
+            currentItem = index;
         }
     }
 
     public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener{
         @Override
         public void onPageSelected(int position) {
-            Animation animation = new TranslateAnimation(tabWidth * currIndex
+            Animation animation = new TranslateAnimation(tabWidth * currentItem
                     + offsetX, tabWidth * position + offsetX, 0, 0);// 显然这个比较简洁，只有一行代码。
-            currIndex = position;
+//            currIndex = position;
             animation.setFillAfter(true);// True:图片停在动画结束位置
             animation.setDuration(350);
             imageView.startAnimation(animation);
 
+            currentItem = position;
             switch(position){
                 case 0:
                     title1.setTextColor(Color.GREEN);
