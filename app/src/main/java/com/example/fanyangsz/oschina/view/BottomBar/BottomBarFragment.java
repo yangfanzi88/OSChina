@@ -25,11 +25,11 @@ public class BottomBarFragment extends Fragment {
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
         }
-        selectItem(mCurrentSelectedPosition);
+        selectItem(mCurrentSelectedPosition, false);
     }
 
-    private void selectItem(int position) {
-        if(position != R.id.bottom_bar_item_quick) {
+    private void selectItem(int position, boolean isClick) {
+        if(position != R.id.bottom_bar_item_quick && (position != mCurrentSelectedPosition || !isClick)) {
 
             mCurrentSelectedPosition = position;
 
@@ -45,10 +45,11 @@ public class BottomBarFragment extends Fragment {
             getView().findViewById(R.id.bottom_bar_text_4).setSelected(position == R.id.bottom_bar_item_4);*/
 //            getView().findViewById(R.id.bottom_bar_quick_option).setSelected(position == R.id.bottom_bar_item_quick);
             }
+            if (mCallbacks != null) {
+                mCallbacks.onBottomBarItemSelected(position);
+            }
         }
-        if (mCallbacks != null) {
-            mCallbacks.onBottomBarItemSelected(position);
-        }
+
     }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -77,7 +78,7 @@ public class BottomBarFragment extends Fragment {
     View.OnClickListener onFliterClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            selectItem(v.getId());
+            selectItem(v.getId(), true);
         }
     };
 

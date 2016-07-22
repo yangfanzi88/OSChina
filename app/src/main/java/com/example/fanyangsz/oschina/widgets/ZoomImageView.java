@@ -21,6 +21,7 @@ import android.widget.ImageView;
 public class ZoomImageView extends ImageView {
 
 
+    //最大最小放大倍数
     private float maxScale = 3f;
     private float minScale = 1f;
 
