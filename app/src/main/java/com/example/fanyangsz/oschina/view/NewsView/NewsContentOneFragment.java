@@ -176,7 +176,7 @@ public class NewsContentOneFragment extends Fragment implements HttpSDK.OnNewsCa
 //                listState[1] = 0;
             } else{
                 listView.hideFooterView();
-                if(currentNews != null && currentNews.getNews() != null){
+                if(currentNews != null && currentNews.getNews() != null && !currentNews.getNews().isEmpty()){
                     currentNews.getNews().addAll( news.getNews());
                     myAdapter.notifyDataSetChanged();
                 }else{

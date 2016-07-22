@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import com.example.fanyangsz.oschina.Api.HttpSDK;
 import com.example.fanyangsz.oschina.R;
+import com.example.fanyangsz.oschina.widgets.ZoomImageView;
 
 public class CircleImageActivity extends Activity {
 
@@ -17,7 +18,7 @@ public class CircleImageActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.layout_circle_popupwindow);
-        ImageView imageView = (ImageView) findViewById(R.id.tweet_big_image);
+        ZoomImageView imageView = (ZoomImageView) findViewById(R.id.tweet_big_image);
         intent = getIntent();
         url = intent.getStringExtra("bigUrl");
         HttpSDK.newInstance().getTweetImage(url,imageView,HttpSDK.IMAGE_TYPE_0);

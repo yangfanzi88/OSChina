@@ -1,7 +1,9 @@
 package com.example.fanyangsz.oschina.view.NewsView;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -26,7 +28,7 @@ public class NewsContentFourFragment extends Fragment implements HttpSDK.onBlogC
     private RefreshListView listView;
 
     BlogsAdapter myAdapter;
-    BlogBeans.Blogs currentBlogs;
+    BlogBeans.Blogs currentBlogs = new BlogBeans.Blogs();
     private int currentPage = 0;
 
     View view,loadingView,failView;
@@ -42,6 +44,9 @@ public class NewsContentFourFragment extends Fragment implements HttpSDK.onBlogC
         failView.setVisibility(View.GONE);
         listView.setVisibility(View.GONE);
         loadingView.setVisibility(View.VISIBLE);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(CacheConfig.SHARED_PAGE, Context.MODE_PRIVATE);
+        currentPage = sharedPreferences.getInt(CacheConfig.KEY_HOT_BLOG_PAGE,0);
         requestBlogs(currentPage, CacheConfig.CacheMode.auto);
 
         listView.setOnRefreshListener(this);
@@ -106,8 +111,14 @@ public class NewsContentFourFragment extends Fragment implements HttpSDK.onBlogC
             listView.setAdapter(myAdapter);
         } else{
             listView.hideFooterView();
-            currentBlogs.getBlog().addAll( blogs.getBlog());
-            myAdapter.notifyDataSetChanged();
+            if(currentBlogs!=null&&currentBlogs.getBlog()!=null){
+                currentBlogs.getBlog().addAll( blogs.getBlog());
+                myAdapter.notifyDataSetChanged();
+            }else{
+                currentBlogs.setBlog(blogs.getBlog());
+                myAdapter =  new BlogsAdapter(currentBlogs,getActivity());
+                listView.setAdapter(myAdapter);
+            }
         }
         loadingView.setVisibility(View.GONE);
         listView.setVisibility(View.VISIBLE);
@@ -117,11 +128,17 @@ public class NewsContentFourFragment extends Fragment implements HttpSDK.onBlogC
     public void onDownPullRefresh() {
         currentPage = 0;
         requestBlogs(currentPage, CacheConfig.CacheMode.servicePriority);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(CacheConfig.SHARED_PAGE,Context.MODE_PRIVATE);
+        sharedPreferences.edit().putInt(CacheConfig.KEY_HOT_BLOG_PAGE,currentPage).apply();
     }
 
     @Override
     public void onLoadingMore() {
         currentPage ++;
         requestBlogs(currentPage, CacheConfig.CacheMode.servicePriority);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(CacheConfig.SHARED_PAGE,Context.MODE_PRIVATE);
+        sharedPreferences.edit().putInt(CacheConfig.KEY_HOT_BLOG_PAGE,currentPage).apply();
     }
 }

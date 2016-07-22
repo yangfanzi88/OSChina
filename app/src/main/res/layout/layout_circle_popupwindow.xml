@@ -5,7 +5,7 @@
     android:background="@color/news_title"
     android:gravity="center">
 
-    <ImageView
+    <com.example.fanyangsz.oschina.widgets.ZoomImageView
         android:id="@+id/tweet_big_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

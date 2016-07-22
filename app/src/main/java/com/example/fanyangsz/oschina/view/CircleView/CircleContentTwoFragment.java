@@ -1,7 +1,9 @@
 package com.example.fanyangsz.oschina.view.CircleView;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -26,7 +28,7 @@ public class CircleContentTwoFragment extends Fragment implements HttpSDK.OnTwee
 
     private RefreshListView listView;
     private TweetAdapter myAdapter;
-    private TweetBeans.TweetList currentTweet;
+    private TweetBeans.TweetList currentTweet = new TweetBeans.TweetList();
     private int currentPage = 0;
     private View view,loadingView,failView;
 
@@ -48,6 +50,9 @@ public class CircleContentTwoFragment extends Fragment implements HttpSDK.OnTwee
         listView.setVisibility(View.GONE);
         loadingView.setVisibility(View.VISIBLE);
 
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(CacheConfig.SHARED_PAGE, Context.MODE_PRIVATE);
+        currentPage = sharedPreferences.getInt(CacheConfig.KEY_HOT_TWEET_PAGE,0);
         requestTweets(currentPage, CacheConfig.CacheMode.auto);
         listView.setOnRefreshListener(this);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -101,26 +106,32 @@ public class CircleContentTwoFragment extends Fragment implements HttpSDK.OnTwee
     }
 
     @Override
-    public void onSuccess(TweetBeans.TweetList datas) {
-        if (datas != null) {
+    public void onSuccess(TweetBeans.TweetList tweets) {
+        if (tweets != null) {
             if (currentPage == 0) {
                 listView.hideHeaderView();
-                if(currentTweet != null){
-                    if(!currentTweet.getTweet().get(0).getPubDate().equals(datas.getTweet().get(0).getPubDate())){
-                        currentTweet = datas;
+                if(currentTweet != null && currentTweet.getTweet()!= null){
+                    if(!currentTweet.getTweet().get(0).getPubDate().equals(tweets.getTweet().get(0).getPubDate())){
+                        currentTweet = tweets;
                         myAdapter = new TweetAdapter(currentTweet, getActivity());
                         listView.setAdapter(myAdapter);
                     }
                 }else{
-                    currentTweet = datas;
+                    currentTweet = tweets;
                     myAdapter = new TweetAdapter(currentTweet, getActivity());
                     listView.setAdapter(myAdapter);
                 }
 
             } else {
                 listView.hideFooterView();
-                currentTweet.getTweet().addAll(datas.getTweet());
-                myAdapter.notifyDataSetChanged();
+                if(currentTweet!=null&&currentTweet.getTweet()!=null){
+                    currentTweet.getTweet().addAll( tweets.getTweet());
+                    myAdapter.notifyDataSetChanged();
+                }else{
+                    currentTweet.setTweet(tweets.getTweet());
+                    myAdapter =  new TweetAdapter(currentTweet,getActivity());
+                    listView.setAdapter(myAdapter);
+                }
             }
             loadingView.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
@@ -131,11 +142,18 @@ public class CircleContentTwoFragment extends Fragment implements HttpSDK.OnTwee
     public void onDownPullRefresh() {
         currentPage = 0;
         requestTweets(currentPage, CacheConfig.CacheMode.servicePriority);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(CacheConfig.SHARED_PAGE,Context.MODE_PRIVATE);
+        sharedPreferences.edit().putInt(CacheConfig.KEY_HOT_TWEET_PAGE,currentPage).apply();
     }
 
     @Override
     public void onLoadingMore() {
         currentPage++;
-        requestTweets(currentPage, CacheConfig.CacheMode.servicePriority);
+        listView.hideFooterView();
+//        requestTweets(currentPage, CacheConfig.CacheMode.servicePriority);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(CacheConfig.SHARED_PAGE,Context.MODE_PRIVATE);
+        sharedPreferences.edit().putInt(CacheConfig.KEY_HOT_TWEET_PAGE,currentPage).apply();
     }
 }

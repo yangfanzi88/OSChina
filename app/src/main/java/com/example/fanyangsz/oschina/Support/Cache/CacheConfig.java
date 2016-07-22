@@ -39,12 +39,14 @@ public class CacheConfig {
     //登陆表名、键名
     public static String SHARED_USER_LOGIN = "user";
     public static String KEY_USER_LOGIN = "loginStatus";
-    //新闻资讯的表名、键名
+    //新闻资讯的表名、键名。动弹的表名、键名。博客的表名、键名。
     public static String SHARED_PAGE = "page";
     public static String KEY_NEWS_PAGE = "news_page";
     public static String KEY_HOT_NEWS_PAGE = "hot_news_page";
-    //新闻资讯viewPager的当前页面和页面的停留位置
-
+    public static String KEY_TWEET_PAGE = "tweet_page";
+    public static String KEY_HOT_TWEET_PAGE = "hot_tweet_page";
+    public static String KEY_BLOG_PAGE = "tweet_page";
+    public static String KEY_HOT_BLOG_PAGE = "hot_tweet_page";
     /**
      *文件保存要用到字段
      */
