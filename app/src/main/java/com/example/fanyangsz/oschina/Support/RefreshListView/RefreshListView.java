@@ -251,6 +251,10 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
             currentState = DOWN_PULL_REFRESH;
         }
     }
+    public void hideHeaderView(boolean needHeader){
+        headerView.setPadding(0, -headerViewHeight, 0, 0);
+
+    }
 
     /**
      * 隐藏脚布局

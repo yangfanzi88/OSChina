@@ -16,7 +16,10 @@ import com.example.fanyangsz.oschina.Beans.TweetBean;
 import com.example.fanyangsz.oschina.Beans.TweetBeans;
 import com.example.fanyangsz.oschina.R;
 import com.example.fanyangsz.oschina.view.CircleView.CircleImageActivity;
+import com.example.fanyangsz.oschina.view.CircleView.UserCenterActivity;
 import com.example.fanyangsz.oschina.view.LoginView.LoginFragment;
+
+import org.kymjs.kjframe.utils.StringUtils;
 
 /**
  * Created by fanyang.sz on 2016/2/23.
@@ -76,6 +79,15 @@ public class TweetAdapter extends BaseAdapter{
             HttpSDK.newInstance().getTweetImage(bean.getPortrait(),holder.face,HttpSDK.IMAGE_TYPE_1);
             holder.face.setTag(bean.getPortrait());
         }
+        holder.face.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, UserCenterActivity.class);
+                intent.putExtra("hisid",String.valueOf(bean.getAuthorid()));
+                intent.putExtra("hisname",bean.getAuthor());
+                mContext.startActivity(intent);
+            }
+        });
 
         holder.content.setText(bean.getBody());
         if(bean.getImgSmall()!=null&&!bean.getImgSmall().isEmpty()){
@@ -99,7 +111,7 @@ public class TweetAdapter extends BaseAdapter{
         }
 //        holder.likeUsers.setText(bean.getLikeCount()+"");
         likeUserShow(holder.likeUsers, bean.getLikeCount(), position);
-        holder.time.setText(bean.getPubDate());
+        holder.time.setText(StringUtils.friendlyTime(bean.getPubDate()));
         holder.platform.setText(bean.getAppclient()+"");
         holder.IvLikeState.setOnClickListener(new View.OnClickListener() {
             @Override

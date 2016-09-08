@@ -15,8 +15,12 @@
     <dimen name="space_10">10dp</dimen>
     <dimen name="space_12">12dp</dimen>
     <dimen name="space_15">15dp</dimen>
+    <dimen name="space_16">16dp</dimen>
     <dimen name="space_20">20dp</dimen>
     <dimen name="space_24">24dp</dimen>
+    <dimen name="space_60">60dp</dimen>
+    <dimen name="space_100">100dp</dimen>
+    <dimen name="space_140">140dp</dimen>
     <dimen name="padding_normal">50dp</dimen>
     <!--自定义textview用到的-->
     <dimen name="timeline_small_card_icon_width">12.0dip</dimen>
@@ -33,7 +37,9 @@
     <!--字体-->
     <dimen name="text_size_11">11sp</dimen>
     <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_13">13sp</dimen>
     <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_15">15sp</dimen>
     <dimen name="text_size_16">16sp</dimen>
     <dimen name="text_size_18">18sp</dimen>
     <dimen name="text_size_20">20sp</dimen>

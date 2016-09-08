@@ -15,6 +15,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -26,6 +27,7 @@ import com.example.fanyangsz.oschina.Beans.NewsBean;
 import com.example.fanyangsz.oschina.Beans.NewsBeans;
 import com.example.fanyangsz.oschina.Beans.TweetBean;
 import com.example.fanyangsz.oschina.Beans.TweetBeans;
+import com.example.fanyangsz.oschina.Beans.UserInformation;
 import com.example.fanyangsz.oschina.R;
 import com.example.fanyangsz.oschina.Support.Cache.BitmapCache;
 import com.example.fanyangsz.oschina.Support.Cache.CacheConfig;
@@ -86,13 +88,16 @@ public class HttpSDK {
     private static RequestQueue mQueue;
     private static String Cookies0;
     private static String Cookies1;
+    private static String Cookies2;
+    private static String Cookies;
 //    private static List<Cookie> cookies = new ArrayList<>();
 
     private HttpSDK() {
     }
 
     private HttpSDK(Context context) {
-        mQueue = Volley.newRequestQueue(context, new MyHurlStack());
+//        mQueue = Volley.newRequestQueue(context, new MyHurlStack());
+        mQueue = Volley.newRequestQueue(context, new HurlStack());
     }
 
     public static HttpSDK newInstance() {
@@ -149,8 +154,10 @@ public class HttpSDK {
                 // TODO Auto-generated method stub
                 try {
                     Map<String, String> responseHeaders = response.headers;
-                    Cookies0 = responseHeaders.get("Set-Cookie0");
-                    Cookies1 = responseHeaders.get("Set-Cookie1");
+//                    Cookies0 = responseHeaders.get("Set-Cookie0");
+//                    Cookies1 = responseHeaders.get("Set-Cookie1");
+//                    Cookies2 = responseHeaders.get("Set-Cookie2");
+                    Cookies = responseHeaders.get("Set-Cookie");
                     String dataString = new String(response.data, "UTF-8");
                     return Response.success(dataString, HttpHeaderParser.parseCacheHeaders(response));
                 } catch (UnsupportedEncodingException e) {
@@ -463,8 +470,10 @@ public class HttpSDK {
                 }*/
                 HashMap<String, String> localHashMap = new HashMap<>();
 //                localHashMap.put("Cookie", sb.toString());
-                localHashMap.put("Set-Cookie0", Cookies0);
-                localHashMap.put("Set-Cookie1", Cookies1);
+//                localHashMap.put("Set-Cookie0", Cookies0);
+//                localHashMap.put("Set-Cookie1", Cookies1);
+//                localHashMap.put("Set-Cookie2", Cookies2);
+                localHashMap.put("Set-Cookie",Cookies);
                 return localHashMap;
             }
 
@@ -559,6 +568,33 @@ public class HttpSDK {
                 return map;
             }
         };
+        mQueue.add(stringRequest);
+    }
+
+    //用户中心信息回调接口
+    public interface onUserCenterCallBack{
+        void onError();
+
+        void onSuccess(UserInformation userInformation);
+    }
+    public void getUserCenter(final onUserCenterCallBack callBack, String hisid, String hisname, int page){
+        String url = SDK_BASE_URL + "action/api/user_information" + "?uid=2594538" + "&hisuid=" + hisid + "&hisname="+ hisname + "&pageIndex=" + page;
+        Logger.e(TAG, url);
+
+        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                InputStream is = new ByteArrayInputStream(s.getBytes());
+                UserInformation userInformation = XmlUtils.toBean(UserInformation.class, is);
+                callBack.onSuccess(userInformation);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                callBack.onError();
+            }
+        });
+
         mQueue.add(stringRequest);
     }
 }

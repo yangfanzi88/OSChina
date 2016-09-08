@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.example.fanyangsz.oschina.Beans.NewsBeans;
 import com.example.fanyangsz.oschina.R;
 
+import org.kymjs.kjframe.utils.StringUtils;
+
 /**
  * Created by fanyang.sz on 2016/1/11.
  */
@@ -72,7 +74,7 @@ public class NewsAdapter extends BaseAdapter{
         holder.newsTitle.setText(datas.getNews().get(position).getTitle());
         holder.content.setText(datas.getNews().get(position).getBody());
         holder.source.setText(datas.getNews().get(position).getAuthor());
-        holder.time.setText(datas.getNews().get(position).getPubDate());
+        holder.time.setText(StringUtils.friendlyTime(datas.getNews().get(position).getPubDate()));
         holder.comment.setText(datas.getNews().get(position).getCommentCount()+"");
         return convertView;
     }

@@ -31,7 +31,7 @@ public class CacheConfig {
     }
 
     // 所有模块缓存默认刷新时间
-    public static final long REFRESH_INTERVAL = 30 * 60 * 1000;
+    public static final long REFRESH_INTERVAL = 3 * 60 * 1000;
 
     /**
      *sharedprefence要用到的字段

@@ -1,6 +1,7 @@
 package com.example.fanyangsz.oschina.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -10,8 +11,11 @@ import com.example.fanyangsz.oschina.Api.HttpSDK;
 import com.example.fanyangsz.oschina.Beans.CommentBean;
 import com.example.fanyangsz.oschina.Beans.CommentBeans;
 import com.example.fanyangsz.oschina.R;
+import com.example.fanyangsz.oschina.view.CircleView.UserCenterActivity;
 import com.example.fanyangsz.oschina.widgets.CircleImageView;
 import com.example.fanyangsz.oschina.widgets.TweetTextView;
+
+import org.kymjs.kjframe.utils.StringUtils;
 
 /**
  * Created by fanyang.sz on 2016/6/23.
@@ -59,11 +63,20 @@ public class CommentAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        CommentBean bean = datas.getComments().get(position);
+        final CommentBean bean = datas.getComments().get(position);
 //        bindData(holder, datas.getComments().get(position));
         HttpSDK.newInstance().getTweetImage(bean.getPortrait(),holder.faceCircle,HttpSDK.IMAGE_TYPE_1);
+        holder.faceCircle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, UserCenterActivity.class);
+                intent.putExtra("hisid",String.valueOf(bean.getAuthorId()));
+                intent.putExtra("hisname",bean.getAuthor());
+                mContext.startActivity(intent);
+            }
+        });
         holder.nameTv.setText(bean.getAuthor());
-        holder.timeTv.setText(bean.getPubDate());
+        holder.timeTv.setText(StringUtils.friendlyTime(bean.getPubDate()));
         holder.contentTv.setText(bean.getContent());
         holder.fromTv.setText(bean.getAppClient()+"");
 

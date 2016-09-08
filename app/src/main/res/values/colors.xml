@@ -3,13 +3,14 @@
     <color name="drawer_menu_text">#ffffff</color>
     <color name="news_content">#80000000</color>
     <color name="news_title">#000</color>
-    <color name="tab_background">#199005</color>
+    <color name="tab_background">#0b9a27</color>
     <color name="tab_line_color">#519</color>
     <color name="white">#ffffff</color>
     <color name="white40">#66ffffff</color>
     <color name="white50">#80ffffff</color>
     <color name="black00">#00000000</color>
     <color name="black">#000000</color>
+    <color name="gray">#808080</color>
     <color name="text_gray">#666</color>
     <color name="main_gray">#9A9A9A</color>
     <color name="light_gray">#1a000000</color>
@@ -20,4 +21,11 @@
 
     <color name="main_link_text_color">#ffbedfff</color>
     <color name="timeline_clickable_text_highlighted_background">#ffbedfff</color>
+
+    <color name="list_divider_color">#DADADA</color>
+    <color name="main_background">#ffebedf0</color>
+    <color name="main_black">#333</color>
+    <color name="transparent">#00000000</color>
+    <color name="window_background">#EBEBEB</color>
+
 </resources>

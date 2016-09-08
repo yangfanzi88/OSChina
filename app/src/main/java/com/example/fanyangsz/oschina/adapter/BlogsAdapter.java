@@ -11,6 +11,8 @@ import com.example.fanyangsz.oschina.Beans.BlogBean;
 import com.example.fanyangsz.oschina.Beans.BlogBeans;
 import com.example.fanyangsz.oschina.R;
 
+import org.kymjs.kjframe.utils.StringUtils;
+
 /**
  * Created by fanyang.sz on 2016/6/1.
  */
@@ -69,7 +71,7 @@ public class BlogsAdapter extends BaseAdapter {
         holder.newsTitle.setText(blogs.getBlog().get(position).getTitle());
         holder.content.setText(blogs.getBlog().get(position).getBody());
         holder.source.setText(blogs.getBlog().get(position).getAuthor());
-        holder.time.setText(blogs.getBlog().get(position).getPubDate());
+        holder.time.setText(StringUtils.friendlyTime(blogs.getBlog().get(position).getPubDate()));
         holder.comment.setText(blogs.getBlog().get(position).getCommentCount()+"");
         return convertView;
     }
