@@ -22,6 +22,8 @@
     <dimen name="space_100">100dp</dimen>
     <dimen name="space_140">140dp</dimen>
     <dimen name="padding_normal">50dp</dimen>
+
+    <dimen name="refresh_listview_footer_height">58dp</dimen>
     <!--自定义textview用到的-->
     <dimen name="timeline_small_card_icon_width">12.0dip</dimen>
     <dimen name="timeline_small_card_icon_height">12.0dip</dimen>

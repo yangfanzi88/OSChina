@@ -70,4 +70,7 @@
 
     <string name="tweet_details">动弹详情</string>
     <string name="tweet_no_comment">暂无评论</string>
+
+    <string name="refresh_listview_footer_more">20条数据正在载入中</string>
+    <string name="refresh_listview_footer_nomore">没有更多</string>
 </resources>

@@ -17,7 +17,7 @@ public class BottomBarFragment extends Fragment {
     private static final String STATE_SELECTED_POSITION = "selected_bottom_bar_position";
     private int mCurrentSelectedPosition = R.id.bottom_bar_item_1;
     private BottomBarCallbacks mCallbacks;
-    private View view;
+    public View view;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

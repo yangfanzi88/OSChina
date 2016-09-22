@@ -1,5 +1,8 @@
 package com.example.fanyangsz.oschina.view.MainActivity;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
@@ -113,15 +116,22 @@ public class MainActivity extends Activity
                 transaction.replace(R.id.container_content, mCircleViewpagerFragment);
                 transaction.commit();
                 break;
-           /* case R.id.bottom_bar_item_3:
-                contentListView.setAdapter(new ArrayAdapter<String>(
-                        MainActivity.this,
-                        android.R.layout.simple_list_item_activated_1,
-                        android.R.id.text1,
-                        new String[]{
-                                "1", "2", "3", "a", "b", "c", "d", "e", "f", "g", "h", "i"
-                        }));
-                break;*/
+            case R.id.bottom_bar_item_3:
+//                contentListView.setAdapter(new ArrayAdapter<String>(
+//                        MainActivity.this,
+//                        android.R.layout.simple_list_item_activated_1,
+//                        android.R.id.text1,
+//                        new String[]{
+//                                "1", "2", "3", "a", "b", "c", "d", "e", "f", "g", "h", "i"
+//                        }));
+                ObjectAnimator.ofFloat(mBottomBarFragment.view, "translationY", -mBottomBarFragment.view.getMeasuredHeight()).start();
+                ValueAnimator colorAnim = ObjectAnimator.ofInt(mBottomBarFragment.view, "backgroundColor", 0xFFFF8080, 0xFF8080FF);
+                colorAnim.setDuration(3000);
+                colorAnim.setEvaluator( new ArgbEvaluator());
+                colorAnim.setRepeatCount(ValueAnimator.INFINITE);
+                colorAnim.setRepeatMode(ValueAnimator.REVERSE);
+                colorAnim.start();
+                break;
             case R.id.bottom_bar_item_4:
 //                contentListView.setAdapter(new ArrayAdapter<String>(
 //                        MainActivity.this,

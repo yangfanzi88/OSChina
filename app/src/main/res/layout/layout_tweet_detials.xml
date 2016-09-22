@@ -150,7 +150,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space_10">
-        <com.example.fanyangsz.oschina.Support.RefreshListView.RefreshListView
+        <!--<com.example.fanyangsz.oschina.Support.RefreshListView.RefreshListView
             android:id="@+id/listView_comment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -158,7 +158,22 @@
             android:choiceMode="singleChoice"
             android:divider="#1A000000"
             android:dividerHeight="0.5dp"
-            android:visibility="visible"/>
+            android:visibility="visible"-->/>
+        <com.example.fanyangsz.oschina.widgets.RefreshLayout
+            android:id="@+id/swipRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <ListView
+                android:id="@+id/listView_comment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ccffffff"
+                android:divider="#1A000000"
+                android:dividerHeight="0.5dp"
+                android:visibility="visible"/>
+        </com.example.fanyangsz.oschina.widgets.RefreshLayout>
         <TextView
             android:id="@+id/tweet_no_comment"
             android:layout_width="wrap_content"

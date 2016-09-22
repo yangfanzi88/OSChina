@@ -98,6 +98,7 @@ public class NewsContentTwoFragment extends Fragment implements HttpSDK.OnNewsCa
 
     @Override
     public void onSuccess(NewsBeans.NewsList news) {
+        currentNews = new NewsBeans.NewsList();
         if(currentPage == 0){
             listView.hideHeaderView();
             currentNews = news;
