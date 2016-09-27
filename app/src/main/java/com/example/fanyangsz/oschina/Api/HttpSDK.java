@@ -19,6 +19,8 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.fanyangsz.oschina.Api.http.Params;
+import com.example.fanyangsz.oschina.Api.setting.Setting;
 import com.example.fanyangsz.oschina.Beans.BlogBean;
 import com.example.fanyangsz.oschina.Beans.BlogBeans;
 import com.example.fanyangsz.oschina.Beans.CommentBeans;
@@ -80,7 +82,7 @@ public class HttpSDK {
     public static String NEWS_URL = "http://m.oschina.net/news/";
     public static String BLOG_URL = "http://m.oschina.net/blog/";
     public static String TWEET_URL = "http://m.oschina.net/tweets/";
-    private final String SDK_BASE_URL = "http://www.oschina.net/";
+    private static final String SDK_BASE_URL = "http://www.oschina.net/";
 
     public static int IMAGE_TYPE_0 = 0;//tweet图片
     public static int IMAGE_TYPE_1 = 1;//头像
@@ -91,6 +93,10 @@ public class HttpSDK {
     private static String Cookies2;
     private static String Cookies;
 //    private static List<Cookie> cookies = new ArrayList<>();
+
+    public static String getBaseUrl(){
+        return SDK_BASE_URL;
+    }
 
     private HttpSDK() {
     }
@@ -511,12 +517,12 @@ public class HttpSDK {
         void onSuccess(CommentBeans.CommentList datas);
     }
 
-    public void getComment(final onCommentCallBack callback, int id, int page, int catalog) {
+    public void getComment( int id, int page, int catalog,Response.Listener<CommentBeans.CommentList> listener, Response.ErrorListener errorListener) {
         String url = SDK_BASE_URL + "action/api/comment_list" + "?id=" + id
                 + "&catalog=" + catalog + "&pageIndex=" + page + "&clientType=" + "android";
         Logger.e(TAG, url);
 
-        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+        /*StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
                 InputStream is = new ByteArrayInputStream(s.getBytes());
@@ -530,7 +536,18 @@ public class HttpSDK {
             }
         });
 
-        mQueue.add(stringRequest);
+        mQueue.add(stringRequest);*/
+
+        Setting action = getAction("getComment", "action/api/comment_list", "获取动弹的评论");
+
+        Params params = new Params();
+        params.addParameter("pageIndex",String.valueOf(page));
+        params.addParameter("id",String.valueOf(id));
+        params.addParameter("catalog",String.valueOf(catalog));
+
+
+        NetworkRequest request = new NetworkRequest(Request.Method.GET,action,params,CommentBeans.CommentList.class,null,listener,errorListener);
+        mQueue.add(request);
     }
 
 
@@ -596,5 +613,16 @@ public class HttpSDK {
         });
 
         mQueue.add(stringRequest);
+    }
+
+    /*******************************************************************************/
+    protected Setting getAction(String type, String value, String desc) {
+        Setting setting = new Setting();
+
+        setting.setType(type);
+        setting.setValue(value);
+        setting.setDescription(desc);
+
+        return setting;
     }
 }

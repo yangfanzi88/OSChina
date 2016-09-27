@@ -23,11 +23,11 @@ public class CacheConfig {
         /**
          * 每次拉取数据，都优先拉取缓存
          */
-//        cachePriority,
+        cachePriority,
         /**
          * 只拉取服务数据
          */
-//        disable
+        disable
     }
 
     // 所有模块缓存默认刷新时间

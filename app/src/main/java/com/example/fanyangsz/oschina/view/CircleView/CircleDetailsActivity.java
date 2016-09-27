@@ -27,6 +27,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.example.fanyangsz.oschina.Api.HttpSDK;
 import com.example.fanyangsz.oschina.Beans.CommentBeans;
 import com.example.fanyangsz.oschina.Beans.TweetBean;
@@ -38,7 +40,7 @@ import com.example.fanyangsz.oschina.widgets.RefreshLayout;
 /**
  * Created by fanyang.sz on 2016/6/7.
  */
-public class CircleDetailsActivity extends ActionBarActivity implements HttpSDK.onCommentCallBack,
+public class CircleDetailsActivity extends ActionBarActivity implements Response.Listener,Response.ErrorListener,
         RefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener {
     ImageView avatarImage;
     TextView userNameText;
@@ -201,10 +203,46 @@ public class CircleDetailsActivity extends ActionBarActivity implements HttpSDK.
     }
 
     void resquestComments(int currentPage) {
-        HttpSDK.newInstance().getComment(this, id, currentPage, CommentBeans.CATALOG_TWEET);
+        HttpSDK.newInstance().getComment( id, currentPage, CommentBeans.CATALOG_TWEET,this,this);
     }
 
     @Override
+    public void onErrorResponse(VolleyError volleyError) {
+
+    }
+
+    @Override
+    public void onResponse(Object o) {
+        CommentBeans.CommentList datas = (CommentBeans.CommentList) o;
+        if (currentPage == 0)
+            refreshLayout.setRefreshing(false);
+//        else
+//            refreshLayout.setLoading(false);
+        if (datas != null && datas.getComments().size() != 0) {
+            if (currentPage == 0) {
+//                commentListView.hideHeaderView();
+
+                currentComment = datas;
+                myAdapter = new CommentAdapter(currentComment, this);
+                commentListView.setAdapter(myAdapter);
+            } else {
+//                commentListView.hideFooterView();
+
+                currentComment.getComments().addAll(datas.getComments());
+                myAdapter.notifyDataSetChanged();
+
+                Toast.makeText(getBaseContext(), String.format("更新了%1$s条数据", datas.getComments().size()), Toast.LENGTH_SHORT).show();
+            }
+            if (currentComment.getComments().size() >= commentCount){
+                isAll = true;
+                refreshLayout.setLoading(false);
+            }
+
+
+        }
+    }
+
+    /*@Override
     public void onError() {
 
     }
@@ -213,8 +251,8 @@ public class CircleDetailsActivity extends ActionBarActivity implements HttpSDK.
     public void onSuccess(CommentBeans.CommentList datas) {
         if (currentPage == 0)
             refreshLayout.setRefreshing(false);
-        /*else
-            refreshLayout.setLoading(false);*/
+//        else
+//            refreshLayout.setLoading(false);
         if (datas != null && datas.getComments().size() != 0) {
             if (currentPage == 0) {
 //                commentListView.hideHeaderView();
@@ -238,7 +276,7 @@ public class CircleDetailsActivity extends ActionBarActivity implements HttpSDK.
 
         }
 
-    }
+    }*/
 
     /*@Override
     public void onDownPullRefresh() {
