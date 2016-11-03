@@ -9,6 +9,11 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.WindowManager;
 
+import com.example.fanyangsz.oschina.Beans.LoginUserBean;
+import com.example.fanyangsz.oschina.Beans.User;
+import com.example.fanyangsz.oschina.Support.Cache.CacheConfig;
+import com.example.fanyangsz.oschina.Support.Cache.SharedPreSaveObject;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -92,5 +97,16 @@ public class Utils {
             versionName =  context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
         }catch (Exception e){e.printStackTrace();}
         return versionName;
+    }
+
+    public static String getUserCookie(Context context){
+        return  (String) SharedPreSaveObject.readObject(context, CacheConfig.SHARED_USER_LOGIN, CacheConfig.KEY_USER_COOKIE);
+    }
+
+    public static User getCurrentUser(Context context){
+        LoginUserBean loginUserBean = (LoginUserBean) SharedPreSaveObject.readObject(context, CacheConfig.SHARED_USER_LOGIN, CacheConfig.KEY_USER_LOGIN);
+        if(loginUserBean!=null && loginUserBean.getUser() != null)
+            return loginUserBean.getUser();
+        return null;
     }
 }

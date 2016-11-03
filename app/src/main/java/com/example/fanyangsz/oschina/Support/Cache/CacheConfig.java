@@ -36,9 +36,10 @@ public class CacheConfig {
     /**
      *sharedprefence要用到的字段
      */
-    //登陆表名、键名
+    //登陆表名、键名；以及登陆的cookie的键值
     public static String SHARED_USER_LOGIN = "user";
     public static String KEY_USER_LOGIN = "loginStatus";
+    public static String KEY_USER_COOKIE = "cookie";
     //新闻资讯的表名、键名。动弹的表名、键名。博客的表名、键名。
     public static String SHARED_PAGE = "page";
     public static String KEY_NEWS_PAGE = "news_page";

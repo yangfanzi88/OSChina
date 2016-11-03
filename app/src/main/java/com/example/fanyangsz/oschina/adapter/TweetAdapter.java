@@ -4,17 +4,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.example.fanyangsz.oschina.Api.HttpSDK;
 import com.example.fanyangsz.oschina.Beans.TweetBean;
 import com.example.fanyangsz.oschina.Beans.TweetBeans;
+import com.example.fanyangsz.oschina.Beans.User;
 import com.example.fanyangsz.oschina.R;
+import com.example.fanyangsz.oschina.Support.util.Utils;
 import com.example.fanyangsz.oschina.view.CircleView.CircleImageActivity;
 import com.example.fanyangsz.oschina.view.CircleView.UserCenterActivity;
 import com.example.fanyangsz.oschina.view.LoginView.LoginFragment;
@@ -50,7 +56,7 @@ public class TweetAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
@@ -116,7 +122,7 @@ public class TweetAdapter extends BaseAdapter{
         holder.IvLikeState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HttpSDK.newInstance().postAgreeTweet(onAgreeTweetCallBack, bean.getId(),bean.getAuthorid(), LoginFragment.getLoginUser(mContext).getUser().getId());
+                HttpSDK.newInstance().postAgreeTweet(bean.getId(),bean.getAuthorid(), LoginFragment.getLoginUser(mContext).getUser().getId(), onSuccess, onError);
             }
         });
         holder.commentcount.setText(bean.getCommentCount());
@@ -143,14 +149,36 @@ public class TweetAdapter extends BaseAdapter{
         return datas;
     }
 
-    HttpSDK.onAgreeTweetCallBack onAgreeTweetCallBack = new HttpSDK.onAgreeTweetCallBack() {
-        @Override
-        public void onError() {
-
+    private class onSuccess implements Response.Listener{
+        ViewHolder holder;
+        int poistion;
+        public onSuccess(ViewHolder holder, int poistion){
+            this.holder = holder;
+            this.poistion = poistion;
         }
-
         @Override
-        public void onSuccess() {
+        public void onResponse(Object o) {
+            User user = Utils.getCurrentUser(mContext);
+            if(user != null){
+                Toast.makeText(mContext, "点赞成功", Toast.LENGTH_SHORT).show();
+                datas.getTweet().get(poistion).getLikeUser().add(0,user);
+                datas.getTweet().get(poistion).setLikeCount(datas.getTweet().get(poistion).getLikeCount()+1);
+                likeUserShow(holder.likeUsers,datas.getTweet().get(poistion).getLikeCount(),poistion);
+                notifyDataSetChanged();
+            }
+        }
+    }
+
+    private Response.Listener onSuccess = new Response.Listener() {
+        @Override
+        public void onResponse(Object o) {
+            Toast.makeText(mContext, "点赞成功", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private Response.ErrorListener onError = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError volleyError) {
 
         }
     };

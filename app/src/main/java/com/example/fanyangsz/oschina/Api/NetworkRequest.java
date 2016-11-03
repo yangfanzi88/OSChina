@@ -28,6 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.example.fanyangsz.oschina.Api.http.Params;
 import com.example.fanyangsz.oschina.Api.setting.Setting;
 import com.example.fanyangsz.oschina.Beans.NewsBeans;
+import com.example.fanyangsz.oschina.Support.Cache.SharedPreSaveObject;
 import com.example.fanyangsz.oschina.Support.util.XmlUtils;
 
 
@@ -39,30 +40,38 @@ public class NetworkRequest<T> extends Request<T> {
     private final Class<T> clazz;
     private final Listener<T> listener;
 
-    private static Map<String, String> mHeader = new HashMap<String, String>();
-    private static Map<String, String> mParams = new HashMap<>();
+
+    private Map<String, String> mHeader = new HashMap<String, String>();
+    private Map<String, String> mParams = new HashMap<>();
+    private int method;
 
     /**
      * @param actionSetting
      * @param clazz 我们最终的转化类型
      * @param appendHeader 请求附带的头信息
      * @param listener
-     * @param appendHeader 附加头数据
      * @param errorListener
      */
-    public NetworkRequest(int method, Setting actionSetting, Params params, Class<T> clazz, Map<String, String> appendHeader,
-                          Listener<T> listener, ErrorListener errorListener) {
-        super(method,paramstoString(String.format("%s%s", HttpSDK.getBaseUrl(), actionSetting.getValue()),params.getVaules(),method) , errorListener);
+    public NetworkRequest(int method, Setting actionSetting, Params params, Class<T> clazz,
+            Map<String, String> appendHeader, Listener<T> listener, ErrorListener errorListener) {
+        super(method, paramstoString(String.format("%s%s", HttpSDK.getBaseUrl(), actionSetting.getValue()),
+                params.getVaules(), method), errorListener);
         this.clazz = clazz;
         this.listener = listener;
+        this.method = method;
         mParams = params.getVaules();
-//        mHeader.putAll(appendHeader);
+        if (appendHeader != null) mHeader.putAll(appendHeader);
+
         setRetryPolicy(new DefaultRetryPolicy(30000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
-    private static String paramstoString(String mURL,Map<String, String> paramsMap, int method)
-    {
-        if( method == Method.GET) {
+    public NetworkRequest(Setting actionSetting, Params params, Class<T> clazz,
+                          Map<String, String> appendHeader, Listener<T> listener, ErrorListener errorListener){
+        this(Method.GET,actionSetting,params,clazz,appendHeader,listener,errorListener);
+    }
+
+    private static String paramstoString(String mURL, Map<String, String> paramsMap, int method) {
+        if (method == Method.GET) {
             int index = mURL.lastIndexOf("?");
 
             StringBuffer urlParam = new StringBuffer(mURL);
@@ -94,6 +103,7 @@ public class NetworkRequest<T> extends Request<T> {
         }
         return mURL;
     }
+
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
         // 默认返回 return Collections.emptyMap();
@@ -102,7 +112,10 @@ public class NetworkRequest<T> extends Request<T> {
 
     @Override
     protected Map<String, String> getParams() throws AuthFailureError {
-        return mParams;
+        if (method == Method.GET)
+            return super.getParams();
+        else
+            return mParams;
     }
 
     @Override
@@ -121,7 +134,13 @@ public class NetworkRequest<T> extends Request<T> {
              * 转化成对象
              */
             InputStream is = new ByteArrayInputStream(Str.getBytes());
-            T result = XmlUtils.toBean(clazz, is);
+            T result;
+            if (clazz != null) {
+                result = XmlUtils.toBean(clazz, is);
+            } else {
+                result = null;
+            }
+
 
             return Response.success(result, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
@@ -130,8 +149,5 @@ public class NetworkRequest<T> extends Request<T> {
             return Response.error(new ParseError(e));
         }
     }
-    private static String urlBuilder(String url, List<NameValuePair> params)
-    {
-        return url + "?" + URLEncodedUtils.format(params, "UTF-8");
-    }
+
 }

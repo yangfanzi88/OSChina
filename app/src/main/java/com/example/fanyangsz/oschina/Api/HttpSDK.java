@@ -1,11 +1,7 @@
 package com.example.fanyangsz.oschina.Api;
 
 import android.content.Context;
-import android.net.http.HttpResponseCache;
-import android.text.TextUtils;
-import android.util.Log;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -15,13 +11,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.fanyangsz.oschina.Api.http.Params;
 import com.example.fanyangsz.oschina.Api.setting.Setting;
-import com.example.fanyangsz.oschina.Beans.BlogBean;
 import com.example.fanyangsz.oschina.Beans.BlogBeans;
 import com.example.fanyangsz.oschina.Beans.CommentBeans;
 import com.example.fanyangsz.oschina.Beans.LoginUserBean;
@@ -29,48 +23,31 @@ import com.example.fanyangsz.oschina.Beans.NewsBean;
 import com.example.fanyangsz.oschina.Beans.NewsBeans;
 import com.example.fanyangsz.oschina.Beans.TweetBean;
 import com.example.fanyangsz.oschina.Beans.TweetBeans;
+import com.example.fanyangsz.oschina.Beans.User;
 import com.example.fanyangsz.oschina.Beans.UserInformation;
 import com.example.fanyangsz.oschina.R;
 import com.example.fanyangsz.oschina.Support.Cache.BitmapCache;
 import com.example.fanyangsz.oschina.Support.Cache.CacheConfig;
 import com.example.fanyangsz.oschina.Support.Cache.InternalStorage;
 import com.example.fanyangsz.oschina.Support.Cache.SharedPreSaveObject;
-import com.example.fanyangsz.oschina.Support.util.JSONHelper;
-import com.example.fanyangsz.oschina.Support.util.JsonObjectPostRequest;
 import com.example.fanyangsz.oschina.Support.util.Logger;
 import com.example.fanyangsz.oschina.Support.util.MyHurlStack;
-import com.example.fanyangsz.oschina.Support.util.MyResponse;
+import com.example.fanyangsz.oschina.Support.util.Utils;
 import com.example.fanyangsz.oschina.Support.util.XmlUtils;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
-
-import org.apache.http.cookie.Cookie;
-
-import org.apache.http.impl.cookie.BasicClientCookie;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.example.fanyangsz.oschina.Support.Cache.CacheConfig.FILE_BLOG;
 import static com.example.fanyangsz.oschina.Support.Cache.CacheConfig.FILE_NEWS;
 import static com.example.fanyangsz.oschina.Support.Cache.CacheConfig.FILE_TWEET;
-import static com.example.fanyangsz.oschina.Support.util.Utils.replaceBlank;
+import static com.example.fanyangsz.oschina.Support.Cache.CacheConfig.KEY_USER_COOKIE;
+import static com.example.fanyangsz.oschina.Support.Cache.CacheConfig.SHARED_USER_LOGIN;
 
 /**
  * Created by fanyang.sz on 2016/1/4.
@@ -92,9 +69,8 @@ public class HttpSDK {
     private static String Cookies1;
     private static String Cookies2;
     private static String Cookies;
-//    private static List<Cookie> cookies = new ArrayList<>();
 
-    public static String getBaseUrl(){
+    public static String getBaseUrl() {
         return SDK_BASE_URL;
     }
 
@@ -102,8 +78,8 @@ public class HttpSDK {
     }
 
     private HttpSDK(Context context) {
-//        mQueue = Volley.newRequestQueue(context, new MyHurlStack());
-        mQueue = Volley.newRequestQueue(context, new HurlStack());
+        mQueue = Volley.newRequestQueue(context, new MyHurlStack());
+//        mQueue = Volley.newRequestQueue(context, new HurlStack());
     }
 
     public static HttpSDK newInstance() {
@@ -125,10 +101,7 @@ public class HttpSDK {
     }
 
 
-    private static final Pattern pattern = Pattern.compile("Set-Cookie\\d*");
-
     public void login(final String username, final String password, final onLoginCallBack callback) {
-//        mQueue = Volley.newRequestQueue(context);
 
         String url = SDK_BASE_URL + "action/api/login_validate";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -160,75 +133,21 @@ public class HttpSDK {
                 // TODO Auto-generated method stub
                 try {
                     Map<String, String> responseHeaders = response.headers;
-//                    Cookies0 = responseHeaders.get("Set-Cookie0");
-//                    Cookies1 = responseHeaders.get("Set-Cookie1");
-//                    Cookies2 = responseHeaders.get("Set-Cookie2");
-                    Cookies = responseHeaders.get("Set-Cookie");
+                    Cookies0 = responseHeaders.get("Set-Cookie0");
+                    Cookies1 = responseHeaders.get("Set-Cookie1");
+                    Cookies2 = responseHeaders.get("Set-Cookie2");
+//                    Cookies = responseHeaders.get("Set-Cookie");
+                    Cookies = Cookies0 + ";" + Cookies1 + ";" + Cookies2 + ";";
+                    SharedPreSaveObject.saveObject(mContext, SHARED_USER_LOGIN, KEY_USER_COOKIE, Cookies);
                     String dataString = new String(response.data, "UTF-8");
                     return Response.success(dataString, HttpHeaderParser.parseCacheHeaders(response));
                 } catch (UnsupportedEncodingException e) {
                     return Response.error(new ParseError(e));
                 }
-                /*try {
-                    MyResponse myResponse = new MyResponse();
-                    String jsonString =
-                            new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-
-                    myResponse.setJsonString(jsonString);
-
-                    // get all cookie
-                    String cookieFromResponse;
-
-                    for (String key : response.headers.keySet()) {
-                        Matcher matcher = pattern.matcher(key);
-                        if (matcher.find()) {
-                            cookieFromResponse = response.headers.get(key);
-                            cookieFromResponse = cookieFromResponse.substring(0, cookieFromResponse.indexOf(";"));
-                            String keyValue[] = cookieFromResponse.split("=", -1);
-                            Cookie cookie = new BasicClientCookie(keyValue[0], keyValue[1]);
-                            cookies.add(cookie);
-                        }
-                    }
-                    String dataString = new String(response.data, "UTF-8");
-
-                    myResponse.setCookies(cookies);
-
-                    return Response.success(dataString, HttpHeaderParser.parseCacheHeaders(response));
-                } catch (UnsupportedEncodingException e) {
-                    return Response.error(new ParseError(e));
-                }*/
             }
         };
 
         mQueue.add(stringRequest);
-//        mQueue.start();
-
-        /*HashMap<String, String> mMap = new HashMap<String, String>();
-        mMap.put("user_name", username);
-        mMap.put("password", password);
-        JsonObjectPostRequest jsonObjectPostRequest = new JsonObjectPostRequest(url, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject jsonObject) {
-                try {
-                    Cookies = jsonObject.getString("Cookie");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    if (jsonObject.get("status").equals("success")) {
-                        //登录成功
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                callback.onError();
-            }
-        },mMap);
-        mQueue.add(jsonObjectPostRequest);*/
     }
 
     //新闻资讯接口和回调
@@ -332,7 +251,7 @@ public class HttpSDK {
                 callBack.onSuccess(result);
             }
         }
-        if (mode == CacheConfig.CacheMode.servicePriority || InternalStorage.isDataFailure(mContext, FILE_BLOG + type) || result != null|| result.getBlog().isEmpty() ) {
+        if (mode == CacheConfig.CacheMode.servicePriority || InternalStorage.isDataFailure(mContext, FILE_BLOG + type) || result != null || result.getBlog().isEmpty()) {
             StringRequest stringRequest = new StringRequest(url,
                     new Response.Listener<String>() {
                         @Override
@@ -397,11 +316,11 @@ public class HttpSDK {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (!InternalStorage.isDataFailure(mContext, FILE_TWEET + uid) && result != null &&  !result.getTweet().isEmpty()) {
+            if (!InternalStorage.isDataFailure(mContext, FILE_TWEET + uid) && result != null && !result.getTweet().isEmpty()) {
                 callBack.onSuccess(result);
             }
         }
-        if (mode == CacheConfig.CacheMode.servicePriority ||InternalStorage.isDataFailure(mContext, FILE_TWEET + uid) || result == null || result.getTweet().isEmpty()) {
+        if (mode == CacheConfig.CacheMode.servicePriority || InternalStorage.isDataFailure(mContext, FILE_TWEET + uid) || result == null || result.getTweet().isEmpty()) {
             StringRequest stringRequest = new StringRequest(url,
                     new Response.Listener<String>() {
                         @Override
@@ -442,177 +361,73 @@ public class HttpSDK {
         loader.get(url, listener);
     }
 
-
-    //发表动弹接口和回调
-    public interface onPubTweetCallBack {
-        void onSuccess();
-
-        void onError();
-    }
-
-    public void pubTweet(final onPubTweetCallBack callBack, final TweetBean tweetBean) {
+    public void pubTweet(final TweetBean tweetBean, Response.Listener listener, Response.ErrorListener errorListener) {
 //        String url = SDK_BASE_URL + "action/api/tweet_pub" + "?uid = " + tweetBean.getAuthorid() + "&msg=" + tweetBean.getBody();
         String url = SDK_BASE_URL + "action/api/tweet_pub";
         Logger.e(TAG, url);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String s) {
-                callBack.onSuccess();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                callBack.onError();
-            }
-        }) {
+        Setting action = getAction("pubTweet","action/api/tweet_pub","发布动弹");
+        Params params = new Params();
+        params.addParameter("uid", String.valueOf(tweetBean.getAuthorid()));
+        params.addParameter("msg", tweetBean.getBody());
 
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                /*StringBuilder sb = new StringBuilder();
-                for (Cookie cookie : cookies) {
-                    if(!cookie.getValue().isEmpty())
-                        sb.append(cookie).append("; ");
-                }*/
-                HashMap<String, String> localHashMap = new HashMap<>();
-//                localHashMap.put("Cookie", sb.toString());
-//                localHashMap.put("Set-Cookie0", Cookies0);
-//                localHashMap.put("Set-Cookie1", Cookies1);
-//                localHashMap.put("Set-Cookie2", Cookies2);
-                localHashMap.put("Set-Cookie",Cookies);
-                return localHashMap;
-            }
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                //在这里设置需要post的参数
-                Map<String, String> map = new HashMap<>();
-                map.put("uid", String.valueOf(tweetBean.getAuthorid()));
-                map.put("msg", tweetBean.getBody());
-                if (!TextUtils.isEmpty(tweetBean.getImageFilePath())) {
-                    try {
-                        map.put("img", String.valueOf(new File(tweetBean.getImageFilePath())));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (!TextUtils.isEmpty(tweetBean.getAudioPath())) {
-                    try {
-                        map.put("amr", String.valueOf(new File(tweetBean.getAudioPath())));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                return map;
-            }
-        };
-        mQueue.add(stringRequest);
+        NetworkRequest request = new NetworkRequest(Request.Method.POST, action, params, null, getCookie(), listener, errorListener);
+        mQueue.add(request);
     }
 
-
-    //评论接口和回调
-    public interface onCommentCallBack {
-        void onError();
-
-        void onSuccess(CommentBeans.CommentList datas);
-    }
-
-    public void getComment( int id, int page, int catalog,Response.Listener<CommentBeans.CommentList> listener, Response.ErrorListener errorListener) {
+    public void getComment(int id, int page, int catalog, Response.Listener<CommentBeans.CommentList> listener, Response.ErrorListener errorListener) {
         String url = SDK_BASE_URL + "action/api/comment_list" + "?id=" + id
                 + "&catalog=" + catalog + "&pageIndex=" + page + "&clientType=" + "android";
         Logger.e(TAG, url);
 
-        /*StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String s) {
-                InputStream is = new ByteArrayInputStream(s.getBytes());
-                CommentBeans.CommentList comments = XmlUtils.toBean(CommentBeans.CommentList.class, is);
-                callback.onSuccess(comments);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                callback.onError();
-            }
-        });
-
-        mQueue.add(stringRequest);*/
-
         Setting action = getAction("getComment", "action/api/comment_list", "获取动弹的评论");
 
         Params params = new Params();
-        params.addParameter("pageIndex",String.valueOf(page));
-        params.addParameter("id",String.valueOf(id));
-        params.addParameter("catalog",String.valueOf(catalog));
+        params.addParameter("pageIndex", String.valueOf(page));
+        params.addParameter("id", String.valueOf(id));
+        params.addParameter("catalog", String.valueOf(catalog));
 
-
-        NetworkRequest request = new NetworkRequest(Request.Method.GET,action,params,CommentBeans.CommentList.class,null,listener,errorListener);
+        NetworkRequest request = new NetworkRequest(action, params, CommentBeans.CommentList.class, null, listener, errorListener);
         mQueue.add(request);
     }
 
-
-    //点赞接口和回调
-    public interface onAgreeTweetCallBack {
-        void onError();
-
-        void onSuccess();
-    }
-
-    public void postAgreeTweet(final onAgreeTweetCallBack callBack, final int tweetId, final int authorId, final int uid) {
+    public void postAgreeTweet(final int tweetId, final int authorId, final int uid, Response.Listener listener, Response.ErrorListener errorListener) {
 //        String url = SDK_BASE_URL + "action/api/tweet_like" + "?tweetid=" + tweetId
 //                + "uid=" +authorId + "ownerOfTweet = " + authorId;
         String url = SDK_BASE_URL + "action/api/tweet_like";
         Logger.e(TAG, url);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String s) {
-                callBack.onSuccess();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                callBack.onError();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                //在这里设置需要post的参数
-                Map<String, String> map = new HashMap<String, String>();
-                map.put("tweetid", tweetId + "");
-                map.put("uid", uid + "");
-                map.put("ownerOfTweet", authorId + "");
-                return map;
-            }
-        };
-        mQueue.add(stringRequest);
+        Setting action = getAction("postAgreeTweet", "action/api/tweet_like", "动弹点赞");
+        Params params = new Params();
+        params.addParameter("tweetid", String.valueOf(tweetId));
+        params.addParameter("uid", String.valueOf(uid));
+        params.addParameter("ownerOfTweet", String.valueOf(authorId));
+
+        NetworkRequest request = new NetworkRequest(Request.Method.POST, action, params, null, getCookie(), listener, errorListener);
+        mQueue.add(request);
     }
 
-    //用户中心信息回调接口
-    public interface onUserCenterCallBack{
-        void onError();
 
-        void onSuccess(UserInformation userInformation);
-    }
-    public void getUserCenter(final onUserCenterCallBack callBack, String hisid, String hisname, int page){
-        String url = SDK_BASE_URL + "action/api/user_information" + "?uid=2594538" + "&hisuid=" + hisid + "&hisname="+ hisname + "&pageIndex=" + page;
+
+    public void getUserCenter(String hisid, String hisname, int page, Response.Listener listener, Response.ErrorListener errorlistener) {
+        String url = SDK_BASE_URL + "action/api/user_information" + "?uid=2594538" + "&hisuid=" + hisid + "&hisname=" + hisname + "&pageIndex=" + page;
         Logger.e(TAG, url);
 
-        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String s) {
-                InputStream is = new ByteArrayInputStream(s.getBytes());
-                UserInformation userInformation = XmlUtils.toBean(UserInformation.class, is);
-                callBack.onSuccess(userInformation);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                callBack.onError();
-            }
-        });
+        Setting action = getAction("getUserCenter","action/api/user_information","获取用户信息");
 
-        mQueue.add(stringRequest);
+        Params params = new Params();
+        String uid="";
+        User user = Utils.getCurrentUser(mContext);
+        if(user!=null){
+            uid = user.getId()+"";
+        }
+        params.addParameter("uid",uid);
+        params.addParameter("hisuid",hisid);
+        params.addParameter("hisname",hisname);
+        params.addParameter("pageIndex",String.valueOf(page));
+
+        Request request = new NetworkRequest(action,params,UserInformation.class,null,listener,errorlistener);
+        mQueue.add(request);
     }
 
     /*******************************************************************************/
@@ -624,5 +439,11 @@ public class HttpSDK {
         setting.setDescription(desc);
 
         return setting;
+    }
+
+    private HashMap<String, String> getCookie(){
+        HashMap<String, String> header = new HashMap<>();
+        header.put("Cookie", Utils.getUserCookie(mContext));
+        return header;
     }
 }

@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.example.fanyangsz.oschina.Api.HttpSDK;
 import com.example.fanyangsz.oschina.Beans.User;
 import com.example.fanyangsz.oschina.Beans.UserInformation;
@@ -117,7 +119,7 @@ public class UserCenterActivity extends ActionBarActivity implements View.OnClic
     }
 
     private void requestUserInfo(int currentPage){
-        HttpSDK.newInstance().getUserCenter(onCallBack, hisid, hisname, currentPage);
+        HttpSDK.newInstance().getUserCenter(hisid, hisname, currentPage, onSuccess, onError);
     }
 
     @Override
@@ -156,16 +158,10 @@ public class UserCenterActivity extends ActionBarActivity implements View.OnClic
         }
     }
 
-    HttpSDK.onUserCenterCallBack onCallBack = new HttpSDK.onUserCenterCallBack() {
+    private Response.Listener onSuccess = new Response.Listener() {
         @Override
-        public void onError() {
-            frameLayout.setVisibility(View.GONE);
-            loading.setVisibility(View.GONE);
-            fail.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        public void onSuccess(UserInformation userInformation) {
+        public void onResponse(Object o) {
+            UserInformation userInformation = (UserInformation)o;
             if(userInformation != null && (userInformation.getUser() != null || !userInformation.getActiveList().isEmpty())){
                 frameLayout.setVisibility(View.VISIBLE);
                 loading.setVisibility(View.GONE);
@@ -183,7 +179,15 @@ public class UserCenterActivity extends ActionBarActivity implements View.OnClic
                 }
 
             }
+        }
+    };
 
+    private Response.ErrorListener onError = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError volleyError) {
+            frameLayout.setVisibility(View.GONE);
+            loading.setVisibility(View.GONE);
+            fail.setVisibility(View.VISIBLE);
         }
     };
 

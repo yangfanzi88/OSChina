@@ -13,12 +13,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.example.fanyangsz.oschina.Api.HttpSDK;
 import com.example.fanyangsz.oschina.Beans.TweetBean;
 import com.example.fanyangsz.oschina.R;
 import com.example.fanyangsz.oschina.view.LoginView.LoginFragment;
 
-public class PostTweetActivity extends ActionBarActivity {
+public class PostTweetActivity extends ActionBarActivity implements Response.Listener,Response.ErrorListener {
 
     private EditText editText;
     private ImageView userPicture;
@@ -117,13 +119,7 @@ public class PostTweetActivity extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-       /* int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-*/
         switch (item.getItemId()){
             case android.R.id.home:
                 this.finish();
@@ -133,20 +129,19 @@ public class PostTweetActivity extends ActionBarActivity {
                 if(!TextUtils.isEmpty(editText.getText())){
                     bean.setBody(editText.getText().toString());
                     bean.setAuthorid(LoginFragment.getLoginUser(this).getUser().getId());
-                    HttpSDK.newInstance().pubTweet(new HttpSDK.onPubTweetCallBack() {
-                        @Override
-                        public void onSuccess() {
-                            PostTweetActivity.this.finish();
-                        }
-
-                        @Override
-                        public void onError() {
-
-                        }
-                    },bean);
+                    HttpSDK.newInstance().pubTweet(bean,this,this);
                 }
-
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError volleyError) {
+
+    }
+
+    @Override
+    public void onResponse(Object o) {
+        PostTweetActivity.this.finish();
     }
 }
